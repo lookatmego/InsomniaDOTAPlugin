@@ -1,0 +1,35 @@
+name: InsomniaDOTA
+main: net.insomniacraft.codeex.InsomniaDOTA.InsomniaDOTA
+version: 0.1b
+description: Plugin that automates and controls DOTA elements of InsomniaCraft DOTA server.
+authors: [JazzKr]
+website: codeex.insomniacraft.net
+commands:
+  setup:
+   description: Used to trigger setup mode on server to modify weak points.
+   usage: Usage is /setup
+  set:
+   description: Used to set turret and nexus weak points when setting up server.
+   usage: Usage is /set [colour] [structure]
+  join:
+   description: Player command to join a team.
+   usage: Usage is /join
+  clear:
+   description: Used to clear a block selection during setup.
+   usage: Usage is /clear
+  ready:
+   description: Used to signal a player is ready so a game can start.
+   usage: Usage is /ready
+  info:
+   description: Used to get information on the state of structures in game.
+   usage: Usage is /info [colour] [structure]
+  reset:
+   description: Used to reset the game.
+   usage: Usage is /reset
+permissions:
+  DOTA.play:
+   description: Enables a person to join and play DOTA games.
+   default: op
+  DOTA.admin:
+   description: Enables admins to control various aspects of a DOTA game like resetting or setup.
+   default: op
