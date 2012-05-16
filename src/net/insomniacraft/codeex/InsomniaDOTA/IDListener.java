@@ -6,7 +6,9 @@ import net.insomniacraft.codeex.InsomniaDOTA.structures.turrets.IDTurretManager;
 import net.insomniacraft.codeex.InsomniaDOTA.teams.IDTeamManager;
 import net.insomniacraft.codeex.InsomniaDOTA.teams.IDTeam.Colour;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Arrow;
@@ -19,6 +21,7 @@ import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.util.BlockIterator;
 
@@ -34,6 +37,22 @@ public class IDListener implements Listener {
 	public void onPlayerJoin(PlayerJoinEvent e) {
 		Player p = e.getPlayer();
 		IDTeamManager.setTeam(Colour.NEUTRAL, p);
+	}
+	
+	@EventHandler
+	public void onPlayerSpawn(PlayerRespawnEvent e) {
+		final Player p = e.getPlayer();
+
+		Bukkit.getServer().getScheduler()
+				.scheduleSyncDelayedTask(pl, new Runnable() {
+					public void run() {
+						p.giveExp(225);
+					}
+				}, 20L);
+		Colour col = IDTeamManager.getTeam(p);
+		Location l = IDTeamManager.getSpawn(col);
+		if (l != null)
+		p.teleport();
 	}
 	
 	@EventHandler
