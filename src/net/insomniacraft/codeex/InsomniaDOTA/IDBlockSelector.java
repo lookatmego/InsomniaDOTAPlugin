@@ -14,7 +14,6 @@ public class IDBlockSelector {
 		}
 		selected.add(b);
 	}
-	// tits
 	public static int getSize() {
 		return selected.size();
 	}
