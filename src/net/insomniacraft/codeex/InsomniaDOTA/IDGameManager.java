@@ -29,7 +29,7 @@ public class IDGameManager {
 
 	public static boolean gameStarted = false;
 
-	private static File nexusFile = new File(InsomniaDOTA.pFolder, "blueNexus.txt");
+	private static File nexusFile = new File(InsomniaDOTA.pFolder, "nexus.txt");
 
 	private static int nH = 50;
 
@@ -97,7 +97,11 @@ public class IDGameManager {
 		gameStarted = false;
 	}
 
-	public static void setNexus(ArrayList<Block> bl, Colour col, int hp) {
+	public static void setNexus(Block[] blocks, Colour col, int hp) {
+		ArrayList<Block> bl = new ArrayList<Block>();
+		for (Block b: blocks) {
+			bl.add(b);
+		}
 		if (col.toString().equals("BLUE")) {
 			blueNexus = new IDNexus(bl, hp, Colour.BLUE);
 		} else if (col.toString().equals("RED")) {
@@ -144,15 +148,15 @@ public class IDGameManager {
 		String line;
 		String xyz;
 		while (((line = br.readLine()) != null) && ((xyz = br.readLine()) != null)) {
-			String[] split = line.split(":");
+			String[] split = line.split("-");
 			String[] coords = xyz.split(":");
-			ArrayList<Block> bl = new ArrayList<Block>();
+			Block[] blocks = new Block[coords.length];
 			for (int i = 0; i < coords.length; i++) {
 				String[] nums = coords[i].split(";");
 				Block b = InsomniaDOTA.s.getWorld("dota").getBlockAt(Integer.parseInt(nums[0]), Integer.parseInt(nums[1]), Integer.parseInt(nums[2]));
-				bl.add(b);
+				blocks[i] = b;
 			}
-			setNexus(bl, IDTeam.getColourFromStr(split[0]), Integer.parseInt(split[1]));
+			setNexus(blocks, IDTeam.getColourFromStr(split[0]), Integer.parseInt(split[1]));
 			System.out.println("[DEBUG] Loaded " + split[0] + " nexus @ " + split[1] + " hp");
 		}
 		br.close();

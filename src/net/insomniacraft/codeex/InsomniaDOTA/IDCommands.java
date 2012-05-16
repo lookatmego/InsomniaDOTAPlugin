@@ -162,7 +162,7 @@ public class IDCommands implements CommandExecutor {
 					if (setupPlayer.equalsIgnoreCase(((Player)sender).getName())) {
 						sender.sendMessage("Now exiting setup mode.");
 						setup = false;
-						IDListener.clearBlocks();
+						IDBlockSelector.clearBlocks();
 						return true;
 					}
 					else {
@@ -211,7 +211,7 @@ public class IDCommands implements CommandExecutor {
 				}
 				if (args[1].equalsIgnoreCase("TOP_OUTER")) {
 					if (args[0].equalsIgnoreCase("RED")) {
-						ArrayList<Block> bl = IDListener.getBlocks();
+						ArrayList<Block> bl = IDBlockSelector.getSelected();
 						if (bl.size() < 1) {
 							sender.sendMessage("No blocks are selected!");
 							return true;
@@ -224,19 +224,19 @@ public class IDCommands implements CommandExecutor {
 						sender.sendMessage("Turret set!");
 						return true;
 					} else if (args[0].equalsIgnoreCase("BLUE")) {
-						ArrayList<Block> bl = IDListener.getBlocks();
+						ArrayList<Block> bl = IDBlockSelector.getSelected();
 						if (bl.size() < 1) {
 							sender.sendMessage("No blocks are selected!");
 							return true;
 						}
 						else if (bl.size() > 1) {
 							sender.sendMessage("Turret weak points are limited to only 1 block.");
-							IDListener.clearBlocks();
+							IDBlockSelector.clearBlocks();
 							return true;
 						}
 						IDTurretManager.setTurret(bl, Colour.BLUE, Turret.TOP_OUTER, IDTurretManager.getDefaultHealth());
 						sender.sendMessage("Turret set!");
-						IDListener.clearBlocks();
+						IDBlockSelector.clearBlocks();
 						sender.sendMessage(String.valueOf(IDTurretManager.isAllSet()));
 						return true;
 					} else {
@@ -244,184 +244,192 @@ public class IDCommands implements CommandExecutor {
 					}
 				} else if (args[1].equalsIgnoreCase("TOP_INNER")) {
 					if (args[0].equalsIgnoreCase("RED")) {
-						ArrayList<Block> bl = IDListener.getBlocks();
+						ArrayList<Block> bl = IDBlockSelector.getSelected();
 						if (bl.size() < 1) {
 							sender.sendMessage("No blocks are selected!");
 							return true;
 						}
 						else if (bl.size() > 1) {
 							sender.sendMessage("Turret weak points are limited to only 1 block.");
-							IDListener.clearBlocks();
+							IDBlockSelector.clearBlocks();
 							return true;
 						}
 						IDTurretManager.setTurret(bl, Colour.RED, Turret.TOP_INNER, IDTurretManager.getDefaultHealth());
 						sender.sendMessage("Turret set!");
-						IDListener.clearBlocks();
+						IDBlockSelector.clearBlocks();
 						return true;
 					} else if (args[0].equalsIgnoreCase("BLUE")) {
-						ArrayList<Block> bl = IDListener.getBlocks();
+						ArrayList<Block> bl = IDBlockSelector.getSelected();
 						if (bl.size() < 1) {
 							sender.sendMessage("No blocks are selected!");
 							return true;
 						}
 						else if (bl.size() > 1) {
 							sender.sendMessage("Turret weak points are limited to only 1 block.");
-							IDListener.clearBlocks();
+							IDBlockSelector.clearBlocks();
 							return true;
 						}
 						IDTurretManager.setTurret(bl, Colour.BLUE, Turret.TOP_INNER, IDTurretManager.getDefaultHealth());
 						sender.sendMessage("Turret set!");
-						IDListener.clearBlocks();
+						IDBlockSelector.clearBlocks();
 						return true;
 					} else {
 						return false;
 					}
 				} else if (args[1].equalsIgnoreCase("MID_OUTER")) {
 					if (args[0].equalsIgnoreCase("RED")) {
-						ArrayList<Block> bl = IDListener.getBlocks();
+						ArrayList<Block> bl = IDBlockSelector.getSelected();
 						if (bl.size() < 1) {
 							sender.sendMessage("No blocks are selected!");
 							return true;
 						}
 						else if (bl.size() > 1) {
 							sender.sendMessage("Turret weak points are limited to only 1 block.");
-							IDListener.clearBlocks();
+							IDBlockSelector.clearBlocks();
 							return true;
 						}
 						IDTurretManager.setTurret(bl, Colour.RED, Turret.MID_OUTER, IDTurretManager.getDefaultHealth());
 						sender.sendMessage("Turret set!");
-						IDListener.clearBlocks();
+						IDBlockSelector.clearBlocks();
 						return true;
 					} else if (args[0].equalsIgnoreCase("BLUE")) {
-						ArrayList<Block> bl = IDListener.getBlocks();
+						ArrayList<Block> bl = IDBlockSelector.getSelected();
 						if (bl.size() < 1) {
 							sender.sendMessage("No blocks are selected!");
 							return true;
 						}
 						else if (bl.size() > 1) {
 							sender.sendMessage("Turret weak points are limited to only 1 block.");
-							IDListener.clearBlocks();
+							IDBlockSelector.clearBlocks();
 							return true;
 						}
 						IDTurretManager.setTurret(bl, Colour.BLUE, Turret.MID_OUTER, IDTurretManager.getDefaultHealth());
 						sender.sendMessage("Turret set!");
-						IDListener.clearBlocks();
+						IDBlockSelector.clearBlocks();
 						return true;
 					} else {
 						return false;
 					}
 				} else if (args[1].equalsIgnoreCase("MID_INNER")) {
 					if (args[0].equalsIgnoreCase("RED")) {
-						ArrayList<Block> bl = IDListener.getBlocks();
+						ArrayList<Block> bl = IDBlockSelector.getSelected();
 						if (bl.size() < 1) {
 							sender.sendMessage("No blocks are selected!");
 							return true;
 						}
 						else if (bl.size() > 1) {
 							sender.sendMessage("Turret weak points are limited to only 1 block.");
-							IDListener.clearBlocks();
+							IDBlockSelector.clearBlocks();
 							return true;
 						}
 						IDTurretManager.setTurret(bl, Colour.RED, Turret.MID_INNER, IDTurretManager.getDefaultHealth());
 						sender.sendMessage("Turret set!");
-						IDListener.clearBlocks();
+						IDBlockSelector.clearBlocks();
 						return true;
 					} else if (args[0].equalsIgnoreCase("BLUE")) {
-						ArrayList<Block> bl = IDListener.getBlocks();
+						ArrayList<Block> bl = IDBlockSelector.getSelected();
 						if (bl.size() < 1) {
 							sender.sendMessage("No blocks are selected!");
 							return true;
 						}
 						else if (bl.size() > 1) {
 							sender.sendMessage("Turret weak points are limited to only 1 block.");
-							IDListener.clearBlocks();
+							IDBlockSelector.clearBlocks();
 							return true;
 						}
 						IDTurretManager.setTurret(bl, Colour.BLUE, Turret.MID_INNER, IDTurretManager.getDefaultHealth());
 						sender.sendMessage("Turret set!");
-						IDListener.clearBlocks();
+						IDBlockSelector.clearBlocks();
 						return true;
 					} else {
 						return false;
 					}
 				} else if (args[1].equalsIgnoreCase("BOT_OUTER")) {
 					if (args[0].equalsIgnoreCase("RED")) {
-						ArrayList<Block> bl = IDListener.getBlocks();
+						ArrayList<Block> bl = IDBlockSelector.getSelected();
 						if (bl.size() < 1) {
 							sender.sendMessage("No blocks are selected!");
 							return true;
 						}
 						else if (bl.size() > 1) {
 							sender.sendMessage("Turret weak points are limited to only 1 block.");
-							IDListener.clearBlocks();
+							IDBlockSelector.clearBlocks();
 							return true;
 						}
 						IDTurretManager.setTurret(bl, Colour.RED, Turret.BOT_OUTER, IDTurretManager.getDefaultHealth());
 						sender.sendMessage("Turret set!");
-						IDListener.clearBlocks();
+						IDBlockSelector.clearBlocks();
 						return true;
 					} else if (args[0].equalsIgnoreCase("BLUE")) {
-						ArrayList<Block> bl = IDListener.getBlocks();
+						ArrayList<Block> bl = IDBlockSelector.getSelected();
 						if (bl.size() < 1) {
 							sender.sendMessage("No blocks are selected!");
 							return true;
 						}
 						else if (bl.size() > 1) {
 							sender.sendMessage("Turret weak points are limited to only 1 block.");
-							IDListener.clearBlocks();
+							IDBlockSelector.clearBlocks();
 							return true;
 						}
 						IDTurretManager.setTurret(bl, Colour.BLUE, Turret.BOT_OUTER, IDTurretManager.getDefaultHealth());
 						sender.sendMessage("Turret set!");
-						IDListener.clearBlocks();
+						IDBlockSelector.clearBlocks();
 						return true;
 					} else {
 						return false;
 					}
 				} else if (args[1].equalsIgnoreCase("BOT_INNER")) {
 					if (args[0].equalsIgnoreCase("RED")) {
-						ArrayList<Block> bl = IDListener.getBlocks();
+						ArrayList<Block> bl = IDBlockSelector.getSelected();
 						if (bl.size() < 1) {
 							sender.sendMessage("No blocks are selected!");
 							return true;
 						}
 						else if (bl.size() > 1) {
 							sender.sendMessage("Turret weak points are limited to only 1 block.");
-							IDListener.clearBlocks();
+							IDBlockSelector.clearBlocks();
 							return true;
 						}
 						IDTurretManager.setTurret(bl, Colour.RED, Turret.BOT_INNER, IDTurretManager.getDefaultHealth());
 						sender.sendMessage("Turret set!");
-						IDListener.clearBlocks();
+						IDBlockSelector.clearBlocks();
 						return true;
 					} else if (args[0].equalsIgnoreCase("BLUE")) {
-						ArrayList<Block> bl = IDListener.getBlocks();
+						ArrayList<Block> bl = IDBlockSelector.getSelected();
 						if (bl.size() < 1) {
 							sender.sendMessage("No blocks are selected!");
 							return true;
 						}
 						else if (bl.size() > 1) {
 							sender.sendMessage("Turret weak points are limited to only 1 block.");
-							IDListener.clearBlocks();
+							IDBlockSelector.clearBlocks();
 							return true;
 						}
 						IDTurretManager.setTurret(bl, Colour.BLUE, Turret.BOT_INNER, IDTurretManager.getDefaultHealth());
 						sender.sendMessage("Turret set!");
-						IDListener.clearBlocks();
+						IDBlockSelector.clearBlocks();
 						return true;
 					} else {
 						return false;
 					}
 				} else if (args[1].equalsIgnoreCase("NEXUS")) {
+					ArrayList<Block> bl = IDBlockSelector.getSelected();
+					String xyz = "";
+					for (Block b: bl) {
+						int x = b.getX();
+						int y = b.getY();
+						int z = b.getZ();
+						xyz = xyz + x + ":" + y + ":" + z + " ";
+					}
 					if (args[0].equalsIgnoreCase("RED")) {
-						IDGameManager.setNexus(IDListener.getBlocks(), Colour.RED, IDGameManager.getNexusDefHealth());
+						IDGameManager.setNexus(IDBlockSelector.getArraySelected(), Colour.RED, IDGameManager.getNexusDefHealth());
 						sender.sendMessage("Red nexus set!");
-						IDListener.clearBlocks();
+						IDBlockSelector.clearBlocks();
 						return true;
 					} else if (args[0].equalsIgnoreCase("BLUE")) {
-						IDGameManager.setNexus(IDListener.getBlocks(), Colour.BLUE, IDGameManager.getNexusDefHealth());
+						IDGameManager.setNexus(IDBlockSelector.getArraySelected(), Colour.BLUE, IDGameManager.getNexusDefHealth());
 						sender.sendMessage("Blue nexus set!");
-						IDListener.clearBlocks();
+						IDBlockSelector.clearBlocks();
 						return true;
 					} else {
 						return false;
@@ -435,7 +443,7 @@ public class IDCommands implements CommandExecutor {
 					sender.sendMessage("Server is not in setup mode.");
 					return true;
 				} else {
-					IDListener.clearBlocks();
+					IDBlockSelector.clearBlocks();
 					sender.sendMessage("Blocks cleared.");
 					return true;
 				}

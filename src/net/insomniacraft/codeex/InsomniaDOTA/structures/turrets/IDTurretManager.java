@@ -31,6 +31,13 @@ public class IDTurretManager {
 	private static File turretFile = new File(InsomniaDOTA.pFolder, "turrets.txt");
 
 	public static void setTurret(ArrayList<Block> bl, Colour c, Turret id, int health) {
+		String xyz = "";
+		for (Block b: bl) {
+			int x = b.getX();
+			int y = b.getY();
+			int z = b.getZ();
+			xyz = xyz + x + ":" + y + ":" + z + " ";
+		}
 		if (c.toString().equals("RED")) {
 			// See if turret already exists
 			for (int i = 0; i < 6; i++) {

@@ -1,7 +1,5 @@
 package net.insomniacraft.codeex.InsomniaDOTA;
 
-import java.util.ArrayList;
-
 import net.insomniacraft.codeex.InsomniaDOTA.structures.nexus.IDNexus;
 import net.insomniacraft.codeex.InsomniaDOTA.structures.turrets.IDTurret;
 import net.insomniacraft.codeex.InsomniaDOTA.structures.turrets.IDTurretManager;
@@ -27,8 +25,6 @@ import org.bukkit.util.BlockIterator;
 public class IDListener implements Listener {
 	
 	Plugin pl;
-	
-	private static ArrayList<Block> blocks = new ArrayList<Block>();
 	
 	public IDListener(Plugin p) {
 		this.pl = p;
@@ -61,23 +57,17 @@ public class IDListener implements Listener {
 		if (b == null) {
 			return;
 		}
-		int x = b.getX();
-		int y = b.getY();
-		int z = b.getZ();
-		//Check if already selected.
-		for (Block bl: blocks) {
-			if ((bl.getX() == x) && (bl.getY() == y) && (bl.getZ() == z)) {
-				pl.getServer().getPlayer(e.getPlayer().getName()).sendMessage("Duplicate block selected!");
-				return;
-			}
-		}
 		//Check if already in use w/ turrets
 		if (IDTurretManager.getTurret(b) != null) {
 			e.getPlayer().sendMessage("Block already in use!");
 			return;
 		}
-		blocks.add(b);
-		e.getPlayer().sendMessage(blocks.size()+" block(s) selected.");
+		if (IDGameManager.getNexus(b) != null) {
+			e.getPlayer().sendMessage("Block already in use!");
+			return;
+		}
+		IDBlockSelector.addBlock(b);
+		e.getPlayer().sendMessage(IDBlockSelector.getSize()+" block(s) selected.");
 	}
 	
 	@EventHandler
@@ -129,14 +119,5 @@ public class IDListener implements Listener {
 			nex.doDamage();
 			pl.getServer().broadcastMessage(String.valueOf(nex.getHealth()));
 		}
-	}
-	
-	public static void clearBlocks() {
-		blocks.clear();
-		System.out.println("[DEBUG] Blocks cleared.");
-	}
-	
-	public static ArrayList<Block> getBlocks() {
-		return blocks;
 	}
 }
