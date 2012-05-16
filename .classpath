@@ -4,5 +4,6 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
 	<classpathentry kind="lib" path="C:/Users/Krisztian/Dropbox/CodeEx/Libraries/craftbukkit-1.2.5-R1.0.jar"/>
 	<classpathentry kind="lib" path="C:/Users/Krisztian/Dropbox/CodeEx/Libraries/LogBlock.jar"/>
+	<classpathentry kind="lib" path="C:/Users/George/Desktop/server/craftbukkit-1.2.5-R1.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
