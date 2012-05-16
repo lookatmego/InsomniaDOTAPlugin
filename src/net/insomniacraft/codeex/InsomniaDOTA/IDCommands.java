@@ -8,6 +8,7 @@ import net.insomniacraft.codeex.InsomniaDOTA.teams.IDTeam.Colour;
 import net.insomniacraft.codeex.InsomniaDOTA.structures.turrets.*;
 import net.insomniacraft.codeex.InsomniaDOTA.structures.turrets.IDTurret.Turret;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.command.*;
@@ -29,7 +30,7 @@ public class IDCommands implements CommandExecutor {
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		// Player Commands
 		if (sender instanceof Player) {
-			Player player = (Player)sender;
+			final Player player = (Player)sender;
 			// Player commands
 			if (sender.hasPermission("DOTA.play")) {
 				if (cmd.getName().equalsIgnoreCase("join")) {
@@ -79,9 +80,27 @@ public class IDCommands implements CommandExecutor {
 						return true;
 					}
 				}
-				if (cmd.getName().equalsIgnoreCase("")) {
-					
-				}
+				/*if (cmd.getName().equalsIgnoreCase("recall")) {
+					boolean isRecalling = false;
+					Colour col = IDTeamManager.getTeam((Player) sender);
+					Location l = IDTeamManager.getSpawn(col);
+					Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(p, new Runnable() {
+						public void run() {
+							
+							float exp = 225;
+							try{
+								Thread.sleep(31);
+							}catch (Exception e){
+								System.out.println("[DEBUG] ");
+							}
+							player.setExp(exp);
+							exp -= 1;
+						}
+					}, 1L);
+					if (l != null){
+						((Player)sender).teleport(l);
+					}
+				}*/
 			}
 		}
 		// Moderator commands

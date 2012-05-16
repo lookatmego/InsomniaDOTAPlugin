@@ -50,9 +50,10 @@ public class IDListener implements Listener {
 					}
 				}, 20L);
 		Colour col = IDTeamManager.getTeam(p);
-		//Location l = IDTeamManager.getSpawn(col);
-		//if (l != null)
-		//p.teleport();
+		Location l = IDTeamManager.getSpawn(col);
+		if (l != null){
+			p.teleport(l);
+		}
 	}
 	
 	@EventHandler
