@@ -6,9 +6,7 @@ import java.util.Random;
 import net.insomniacraft.codeex.InsomniaDOTA.teams.IDTeamManager;
 import net.insomniacraft.codeex.InsomniaDOTA.teams.IDTeam.Colour;
 import net.insomniacraft.codeex.InsomniaDOTA.structures.turrets.*;
-import net.insomniacraft.codeex.InsomniaDOTA.structures.turrets.IDTurret.Turret;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.command.*;
@@ -30,9 +28,12 @@ public class IDCommands implements CommandExecutor {
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		// Player Commands
 		if (sender instanceof Player) {
-			final Player player = (Player)sender;
+			final Player player = (Player) sender;
 			// Player commands
+			// DOTA PLAY PERMISSIONS
 			if (sender.hasPermission("DOTA.play")) {
+
+				// JOIN COMMAND
 				if (cmd.getName().equalsIgnoreCase("join")) {
 					Colour c = IDTeamManager.getTeam(player);
 					if ((c.toString().equals("RED")) || (c.toString().equals("BLUE"))) {
@@ -57,6 +58,9 @@ public class IDCommands implements CommandExecutor {
 						return true;
 					}
 				}
+				// JOIN COMMAND END
+
+				// RDY COMMAND
 				if (cmd.getName().equalsIgnoreCase("rdy")) {
 					Colour c = IDTeamManager.getTeam(player);
 					if (c.toString().equals("NEUTRAL")) {
@@ -67,7 +71,7 @@ public class IDCommands implements CommandExecutor {
 						player.sendMessage("A game is already in progress.");
 						return true;
 					}
-					if (IDTeamManager.isPlayerReady(player)) {		
+					if (IDTeamManager.isPlayerReady(player)) {
 						IDTeamManager.removeReady(c, player);
 						return true;
 					} else {
@@ -80,31 +84,24 @@ public class IDCommands implements CommandExecutor {
 						return true;
 					}
 				}
-				/*if (cmd.getName().equalsIgnoreCase("recall")) {
-					boolean isRecalling = false;
-					Colour col = IDTeamManager.getTeam((Player) sender);
-					Location l = IDTeamManager.getSpawn(col);
-					Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(p, new Runnable() {
-						public void run() {
-							
-							float exp = 225;
-							try{
-								Thread.sleep(31);
-							}catch (Exception e){
-								System.out.println("[DEBUG] ");
-							}
-							player.setExp(exp);
-							exp -= 1;
-						}
-					}, 1L);
-					if (l != null){
-						((Player)sender).teleport(l);
-					}
-				}*/
+				// RDY COMMAND END
+
+				// RECALL COMMAND
+				//Sorry george eclipse formatting did this!!!
+				/*
+				 * if (cmd.getName().equalsIgnoreCase("recall")) { boolean isRecalling = false; Colour col = IDTeamManager.getTeam((Player) sender); Location l = IDTeamManager.getSpawn(col); Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(p, new Runnable() { public void run() {
+				 * 
+				 * float exp = 225; try{ Thread.sleep(31); }catch (Exception e){ System.out.println("[DEBUG] "); } player.setExp(exp); exp -= 1; } }, 1L); if (l != null){ ((Player)sender).teleport(l); } }
+				 */
+				// RECALL COMMAND END
 			}
+			// DOTA PLAY PERMISSIONS END
 		}
 		// Moderator commands
+		// DOTA MOD PERMISSIONS
 		if (sender.hasPermission("DOTA.mod")) {
+
+			// REMOVE COMMAND
 			if (cmd.getName().equalsIgnoreCase("remove")) {
 				if (!(args.length == 1)) {
 					return false;
@@ -112,6 +109,9 @@ public class IDCommands implements CommandExecutor {
 				Player pl = p.getServer().getPlayer(args[0]);
 				IDTeamManager.setTeam(Colour.NEUTRAL, pl);
 			}
+			// REMOVE COMMAND END
+
+			// ADD COMMAND
 			if (cmd.getName().equalsIgnoreCase("add")) {
 				if (!(args.length == 2)) {
 					return false;
@@ -135,6 +135,9 @@ public class IDCommands implements CommandExecutor {
 					return true;
 				}
 			}
+			// ADD COMMAND END
+
+			// TEAMSWITCH COMMAND
 			if (cmd.getName().equalsIgnoreCase("teamswitch")) {
 				if (!(args.length == 1)) {
 					return false;
@@ -156,18 +159,25 @@ public class IDCommands implements CommandExecutor {
 					return true;
 				}
 			}
+			// TEAMSWITCH COMMAND END
 		}
+		// DOTA MOD PERMISSIONS END
 		// Admin commands
+		// DOTA ADMIN PERMISSIONS
 		if (sender.hasPermission("DOTA.admin")) {
+			// RESET COMMAND
 			if (cmd.getName().equalsIgnoreCase("reset")) {
 				IDGameManager.endGame();
 				sender.sendMessage("Game reset!");
 				return true;
 			}
+			// RESET COMMAND END
+
+			// SETUP COMMAND
 			if (cmd.getName().equalsIgnoreCase("setup")) {
 				if (sender instanceof ConsoleCommandSender) {
 					setup = !setup;
-					InsomniaDOTA.l.info("[DEBUG] Setup is now "+setup+".");
+					InsomniaDOTA.l.info("[DEBUG] Setup is now " + setup + ".");
 					return true;
 				}
 				if (setup == false) {
@@ -176,51 +186,54 @@ public class IDCommands implements CommandExecutor {
 					sender.sendMessage("Type /set [colour] [structure] to set a structure.");
 					sender.sendMessage("To exit setup mode type /setup again.");
 					setup = true;
-					setupPlayer = ((Player)sender).getName();
+					setupPlayer = ((Player) sender).getName();
 					return true;
 				} else if (setup == true) {
-					if (setupPlayer.equalsIgnoreCase(((Player)sender).getName())) {
+					if (setupPlayer.equalsIgnoreCase(((Player) sender).getName())) {
 						sender.sendMessage("Now exiting setup mode.");
 						setup = false;
 						IDBlockSelector.clearBlocks();
 						return true;
-					}
-					else {
-						sender.sendMessage("Only "+setupPlayer+" or console can exit setup mode!");
+					} else {
+						sender.sendMessage("Only " + setupPlayer + " or console can exit setup mode!");
 						return true;
 					}
 				}
 				return false;
 			}
+			// SETUP COMMAND END
+
+			// INFO COMMAND
 			if (cmd.getName().equalsIgnoreCase("info")) {
 				if (args.length == 1) {
 					if (args[0].equalsIgnoreCase("BLUE")) {
-						for (IDTurret t: IDTurretManager.getBlueTurrets()) {
+						for (IDTurret t : IDTurretManager.getBlueTurrets()) {
 							if (t == null) {
 								sender.sendMessage("Blue turret is null!");
 							} else {
-								sender.sendMessage(t.getTeam()+" "+t.getId()+" HP:"+t.getHealth());
+								sender.sendMessage(t.getTeam() + " " + t.getId() + " HP:" + t.getHealth());
 							}
 						}
 						return true;
-					}
-					else if (args[0].equalsIgnoreCase("RED")) {
-						for (IDTurret t: IDTurretManager.getRedTurrets()) {
+					} else if (args[0].equalsIgnoreCase("RED")) {
+						for (IDTurret t : IDTurretManager.getRedTurrets()) {
 							if (t == null) {
 								sender.sendMessage("Red turret is null!");
 							} else {
-								sender.sendMessage(t.getTeam()+" "+t.getId()+" HP:"+t.getHealth());
+								sender.sendMessage(t.getTeam() + " " + t.getId() + " HP:" + t.getHealth());
 							}
 						}
 						return true;
 					}
 					return false;
-				}
-				else if (args.length == 2) {
+				} else if (args.length == 2) {
 					return true;
 				}
 				return false;
 			}
+			// INFO COMMAND END
+
+			// SET COMMAND
 			if (cmd.getName().equalsIgnoreCase("set")) {
 				if (IDCommands.setup == false) {
 					sender.sendMessage("Server is not in setup mode.");
@@ -229,218 +242,25 @@ public class IDCommands implements CommandExecutor {
 				if (!(args.length == 2)) {
 					return false;
 				}
-				if (args[1].equalsIgnoreCase("TOP_OUTER")) {
-					if (args[0].equalsIgnoreCase("RED")) {
-						ArrayList<Block> bl = IDBlockSelector.getSelected();
-						if (bl.size() < 1) {
-							sender.sendMessage("No blocks are selected!");
-							return true;
-						}
-						else if (bl.size() > 1) {
-							sender.sendMessage("Turret weak points are limited to only 1 block.");
-							return true;
-						}
-						IDTurretManager.setTurret(bl, Colour.RED, Turret.TOP_OUTER, IDTurretManager.getDefaultHealth());
-						sender.sendMessage("Turret set!");
-						return true;
-					} else if (args[0].equalsIgnoreCase("BLUE")) {
-						ArrayList<Block> bl = IDBlockSelector.getSelected();
-						if (bl.size() < 1) {
-							sender.sendMessage("No blocks are selected!");
-							return true;
-						}
-						else if (bl.size() > 1) {
-							sender.sendMessage("Turret weak points are limited to only 1 block.");
-							IDBlockSelector.clearBlocks();
-							return true;
-						}
-						IDTurretManager.setTurret(bl, Colour.BLUE, Turret.TOP_OUTER, IDTurretManager.getDefaultHealth());
-						sender.sendMessage("Turret set!");
-						IDBlockSelector.clearBlocks();
-						sender.sendMessage(String.valueOf(IDTurretManager.isAllSet()));
-						return true;
-					} else {
-						return false;
-					}
-				} else if (args[1].equalsIgnoreCase("TOP_INNER")) {
-					if (args[0].equalsIgnoreCase("RED")) {
-						ArrayList<Block> bl = IDBlockSelector.getSelected();
-						if (bl.size() < 1) {
-							sender.sendMessage("No blocks are selected!");
-							return true;
-						}
-						else if (bl.size() > 1) {
-							sender.sendMessage("Turret weak points are limited to only 1 block.");
-							IDBlockSelector.clearBlocks();
-							return true;
-						}
-						IDTurretManager.setTurret(bl, Colour.RED, Turret.TOP_INNER, IDTurretManager.getDefaultHealth());
-						sender.sendMessage("Turret set!");
-						IDBlockSelector.clearBlocks();
-						return true;
-					} else if (args[0].equalsIgnoreCase("BLUE")) {
-						ArrayList<Block> bl = IDBlockSelector.getSelected();
-						if (bl.size() < 1) {
-							sender.sendMessage("No blocks are selected!");
-							return true;
-						}
-						else if (bl.size() > 1) {
-							sender.sendMessage("Turret weak points are limited to only 1 block.");
-							IDBlockSelector.clearBlocks();
-							return true;
-						}
-						IDTurretManager.setTurret(bl, Colour.BLUE, Turret.TOP_INNER, IDTurretManager.getDefaultHealth());
-						sender.sendMessage("Turret set!");
-						IDBlockSelector.clearBlocks();
-						return true;
-					} else {
-						return false;
-					}
-				} else if (args[1].equalsIgnoreCase("MID_OUTER")) {
-					if (args[0].equalsIgnoreCase("RED")) {
-						ArrayList<Block> bl = IDBlockSelector.getSelected();
-						if (bl.size() < 1) {
-							sender.sendMessage("No blocks are selected!");
-							return true;
-						}
-						else if (bl.size() > 1) {
-							sender.sendMessage("Turret weak points are limited to only 1 block.");
-							IDBlockSelector.clearBlocks();
-							return true;
-						}
-						IDTurretManager.setTurret(bl, Colour.RED, Turret.MID_OUTER, IDTurretManager.getDefaultHealth());
-						sender.sendMessage("Turret set!");
-						IDBlockSelector.clearBlocks();
-						return true;
-					} else if (args[0].equalsIgnoreCase("BLUE")) {
-						ArrayList<Block> bl = IDBlockSelector.getSelected();
-						if (bl.size() < 1) {
-							sender.sendMessage("No blocks are selected!");
-							return true;
-						}
-						else if (bl.size() > 1) {
-							sender.sendMessage("Turret weak points are limited to only 1 block.");
-							IDBlockSelector.clearBlocks();
-							return true;
-						}
-						IDTurretManager.setTurret(bl, Colour.BLUE, Turret.MID_OUTER, IDTurretManager.getDefaultHealth());
-						sender.sendMessage("Turret set!");
-						IDBlockSelector.clearBlocks();
-						return true;
-					} else {
-						return false;
-					}
-				} else if (args[1].equalsIgnoreCase("MID_INNER")) {
-					if (args[0].equalsIgnoreCase("RED")) {
-						ArrayList<Block> bl = IDBlockSelector.getSelected();
-						if (bl.size() < 1) {
-							sender.sendMessage("No blocks are selected!");
-							return true;
-						}
-						else if (bl.size() > 1) {
-							sender.sendMessage("Turret weak points are limited to only 1 block.");
-							IDBlockSelector.clearBlocks();
-							return true;
-						}
-						IDTurretManager.setTurret(bl, Colour.RED, Turret.MID_INNER, IDTurretManager.getDefaultHealth());
-						sender.sendMessage("Turret set!");
-						IDBlockSelector.clearBlocks();
-						return true;
-					} else if (args[0].equalsIgnoreCase("BLUE")) {
-						ArrayList<Block> bl = IDBlockSelector.getSelected();
-						if (bl.size() < 1) {
-							sender.sendMessage("No blocks are selected!");
-							return true;
-						}
-						else if (bl.size() > 1) {
-							sender.sendMessage("Turret weak points are limited to only 1 block.");
-							IDBlockSelector.clearBlocks();
-							return true;
-						}
-						IDTurretManager.setTurret(bl, Colour.BLUE, Turret.MID_INNER, IDTurretManager.getDefaultHealth());
-						sender.sendMessage("Turret set!");
-						IDBlockSelector.clearBlocks();
-						return true;
-					} else {
-						return false;
-					}
-				} else if (args[1].equalsIgnoreCase("BOT_OUTER")) {
-					if (args[0].equalsIgnoreCase("RED")) {
-						ArrayList<Block> bl = IDBlockSelector.getSelected();
-						if (bl.size() < 1) {
-							sender.sendMessage("No blocks are selected!");
-							return true;
-						}
-						else if (bl.size() > 1) {
-							sender.sendMessage("Turret weak points are limited to only 1 block.");
-							IDBlockSelector.clearBlocks();
-							return true;
-						}
-						IDTurretManager.setTurret(bl, Colour.RED, Turret.BOT_OUTER, IDTurretManager.getDefaultHealth());
-						sender.sendMessage("Turret set!");
-						IDBlockSelector.clearBlocks();
-						return true;
-					} else if (args[0].equalsIgnoreCase("BLUE")) {
-						ArrayList<Block> bl = IDBlockSelector.getSelected();
-						if (bl.size() < 1) {
-							sender.sendMessage("No blocks are selected!");
-							return true;
-						}
-						else if (bl.size() > 1) {
-							sender.sendMessage("Turret weak points are limited to only 1 block.");
-							IDBlockSelector.clearBlocks();
-							return true;
-						}
-						IDTurretManager.setTurret(bl, Colour.BLUE, Turret.BOT_OUTER, IDTurretManager.getDefaultHealth());
-						sender.sendMessage("Turret set!");
-						IDBlockSelector.clearBlocks();
-						return true;
-					} else {
-						return false;
-					}
-				} else if (args[1].equalsIgnoreCase("BOT_INNER")) {
-					if (args[0].equalsIgnoreCase("RED")) {
-						ArrayList<Block> bl = IDBlockSelector.getSelected();
-						if (bl.size() < 1) {
-							sender.sendMessage("No blocks are selected!");
-							return true;
-						}
-						else if (bl.size() > 1) {
-							sender.sendMessage("Turret weak points are limited to only 1 block.");
-							IDBlockSelector.clearBlocks();
-							return true;
-						}
-						IDTurretManager.setTurret(bl, Colour.RED, Turret.BOT_INNER, IDTurretManager.getDefaultHealth());
-						sender.sendMessage("Turret set!");
-						IDBlockSelector.clearBlocks();
-						return true;
-					} else if (args[0].equalsIgnoreCase("BLUE")) {
-						ArrayList<Block> bl = IDBlockSelector.getSelected();
-						if (bl.size() < 1) {
-							sender.sendMessage("No blocks are selected!");
-							return true;
-						}
-						else if (bl.size() > 1) {
-							sender.sendMessage("Turret weak points are limited to only 1 block.");
-							IDBlockSelector.clearBlocks();
-							return true;
-						}
-						IDTurretManager.setTurret(bl, Colour.BLUE, Turret.BOT_INNER, IDTurretManager.getDefaultHealth());
-						sender.sendMessage("Turret set!");
-						IDBlockSelector.clearBlocks();
-						return true;
-					} else {
-						return false;
-					}
-				} else if (args[1].equalsIgnoreCase("NEXUS")) {
+				//If turret, set turret
+				if (args[1].equalsIgnoreCase("TOP_OUTER") || args[1].equalsIgnoreCase("TOP_INNER") || args[1].equalsIgnoreCase("MID_OUTER") || args[1].equalsIgnoreCase("MID_INNER") ||
+						args[1].equalsIgnoreCase("BOT_OUTER") || args[1].equalsIgnoreCase("BOT_INNER")) {
 					ArrayList<Block> bl = IDBlockSelector.getSelected();
-					String xyz = "";
-					for (Block b: bl) {
-						int x = b.getX();
-						int y = b.getY();
-						int z = b.getZ();
-						xyz = xyz + x + ":" + y + ":" + z + " ";
+					IDTurretParams itp;
+					try {
+						itp = new IDTurretParams(bl, args[0], args[1], IDTurretManager.getDefaultHealth());
+					} catch (Exception e) {
+						sender.sendMessage("Error: "+e.getMessage());
+						return true;
 					}
+					if (itp != null) {
+						IDTurretManager.setTurret(itp);
+						sender.sendMessage("Turret set!");
+					}
+					IDBlockSelector.clearBlocks();
+				}
+				//If nexus, set nexus
+				else if (args[1].equalsIgnoreCase("NEXUS")) {
 					if (args[0].equalsIgnoreCase("RED")) {
 						IDGameManager.setNexus(IDBlockSelector.getArraySelected(), Colour.RED, IDGameManager.getNexusDefHealth());
 						sender.sendMessage("Red nexus set!");
@@ -454,24 +274,32 @@ public class IDCommands implements CommandExecutor {
 					} else {
 						return false;
 					}
-				} else if (args [1].equalsIgnoreCase("SPAWN")){
-					Location l = ((Player)sender).getLocation();
-					if (args [0].equalsIgnoreCase("RED")){
+				} 
+				//If spawn, set spawn
+				else if (args[1].equalsIgnoreCase("SPAWN")) {
+					Location l = ((Player) sender).getLocation();
+					if (args[0].equalsIgnoreCase("RED")) {
 						IDTeamManager.setSpawn(Colour.RED, l);
 						sender.sendMessage("Red spawn set!");
 						return true;
-					} else if (args [0].equalsIgnoreCase("BLUE")){
+					} else if (args[0].equalsIgnoreCase("BLUE")) {
 						IDTeamManager.setSpawn(Colour.BLUE, l);
 						sender.sendMessage("Blue spawn set!");
 						return true;
-					}else {
+					} else {
 						sender.sendMessage("Not a valid colour!");
 						return true;
 					}
-				} else {
+				}
+				//If none of the above...
+				else {
 					return false;
 				}
+
 			}
+			// SET COMMAND END
+
+			// CLEAR COMMAND
 			if (cmd.getName().equalsIgnoreCase("clear")) {
 				if (setup == false) {
 					sender.sendMessage("Server is not in setup mode.");
@@ -482,15 +310,9 @@ public class IDCommands implements CommandExecutor {
 					return true;
 				}
 			}
+			// CLEAR COMMAND END
 		}
-		// Console Commands
-		else if (sender instanceof ConsoleCommandSender || sender instanceof RemoteConsoleCommandSender) {
-			if (cmd.getName().equalsIgnoreCase("startgame")) {
-				IDGameManager.gameStarted = !IDGameManager.gameStarted;
-				return true;
-			}
-			return true;
-		}
+		//DOTA ADMIN PERMISSIONS END
 		return true;
-	}
+	}	
 }

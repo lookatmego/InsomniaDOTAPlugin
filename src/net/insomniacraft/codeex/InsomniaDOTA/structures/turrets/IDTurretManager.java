@@ -31,13 +31,6 @@ public class IDTurretManager {
 	private static File turretFile = new File(InsomniaDOTA.pFolder, "turrets.txt");
 
 	public static void setTurret(ArrayList<Block> bl, Colour c, Turret id, int health) {
-		String xyz = "";
-		for (Block b: bl) {
-			int x = b.getX();
-			int y = b.getY();
-			int z = b.getZ();
-			xyz = xyz + x + ":" + y + ":" + z + " ";
-		}
 		if (c.toString().equals("RED")) {
 			// See if turret already exists
 			for (int i = 0; i < 6; i++) {
@@ -64,6 +57,39 @@ public class IDTurretManager {
 			}
 			// Once here it is sure there are no turrets of that id & colour so make one
 			IDTurret bTurret = new IDTurret(bl, health, id, c);
+			blueTurrets[tIndex(blueTurrets)] = bTurret;
+		}
+		// After each single turret set, check if they are all set
+		allSet = checkAllSet();
+	}
+	
+	public static void setTurret(IDTurretParams itp) {
+		if (itp.col.toString().equals("RED")) {
+			// See if turret already exists
+			for (int i = 0; i < 6; i++) {
+				if (redTurrets[i] == null) {
+					continue;
+				}
+				if (redTurrets[i].getId().toString().equals(itp.id.toString())) {
+					redTurrets[i] = null;
+				}
+			}
+			// Once here it is sure there are no turrets of that id & colour so make one
+			IDTurret rTurret = new IDTurret(itp);
+			redTurrets[tIndex(redTurrets)] = rTurret;
+		} else if (itp.col.toString().equals("BLUE")) {
+			// See if turret already exists
+			for (int i = 0; i < 6; i++) {
+				if (blueTurrets[i] == null) {
+					continue;
+				}
+				//If one does, make it null
+				if (blueTurrets[i].getId().toString().equals(itp.id.toString())) {
+					blueTurrets[i] = null;
+				}
+			}
+			// Once here it is sure there are no turrets of that id & colour so make one
+			IDTurret bTurret = new IDTurret(itp);
 			blueTurrets[tIndex(blueTurrets)] = bTurret;
 		}
 		// After each single turret set, check if they are all set

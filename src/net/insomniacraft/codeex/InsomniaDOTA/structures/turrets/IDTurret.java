@@ -17,12 +17,22 @@ public class IDTurret extends IDStructure {
 	private Turret id;
 	private Colour c;
 
+	//Regular constructor
 	public IDTurret(ArrayList<Block> blocks, int health, Turret id, Colour col) {
 		super (blocks, health);
 		turretBlock = blocks.get(0);
 		isDead = false;
 		this.id = id;
 		this.c = col;
+	}
+	
+	//Alternate constructor to create turret from IDTurretParams object
+	public IDTurret(IDTurretParams itp) {
+		super (itp.blocks, itp.hp);
+		turretBlock = itp.turretBlock;
+		isDead = false;
+		this.id = itp.id;
+		this.c = itp.col;
 	}
 	
 	public Block getTurretBlock() {

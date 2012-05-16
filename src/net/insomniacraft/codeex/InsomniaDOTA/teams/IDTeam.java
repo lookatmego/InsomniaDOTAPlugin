@@ -95,6 +95,8 @@ public class IDTeam {
 			return Colour.RED;
 		} else if (s.equalsIgnoreCase("BLUE")) {
 			return Colour.BLUE;
+		} else if (s.equalsIgnoreCase("NEUTRAL")) {
+			return Colour.NEUTRAL;
 		} else {
 			return null;
 		}

@@ -36,6 +36,7 @@ public class IDTeamManager {
 	public static void setTeam(Colour col, Player p) {
 		removePlayer(getTeam(p), p);
 		addPlayer(col, p);
+		p.sendMessage("You are now on team "+col.toString()+"!");
 	}
 	
 	public static void removeFromTeam(Player p) {
@@ -217,6 +218,7 @@ public class IDTeamManager {
 			double y = Double.parseDouble(rSpawnSP [1]);
 			double z = Double.parseDouble(rSpawnSP [2]);
 			Location l = new Location (InsomniaDOTA.s.getWorld("dota"), x, y,z);
+			red.setSpawn(l);
 		}
 		
 		System.out.println("[DEBUG] Successfully loaded teams!");
