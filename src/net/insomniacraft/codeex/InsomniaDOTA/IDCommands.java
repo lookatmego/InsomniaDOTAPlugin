@@ -8,6 +8,7 @@ import net.insomniacraft.codeex.InsomniaDOTA.teams.IDTeam.Colour;
 import net.insomniacraft.codeex.InsomniaDOTA.structures.turrets.*;
 import net.insomniacraft.codeex.InsomniaDOTA.structures.turrets.IDTurret.Turret;
 
+import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.command.*;
 import org.bukkit.entity.Player;
@@ -433,6 +434,20 @@ public class IDCommands implements CommandExecutor {
 						return true;
 					} else {
 						return false;
+					}
+				} else if (args [1].equalsIgnoreCase("SPAWN")){
+					Location l = ((Player)sender).getLocation();
+					if (args [0].equalsIgnoreCase("RED")){
+						IDTeamManager.setSpawn(Colour.RED, l);
+						sender.sendMessage("Red spawn set!");
+						return true;
+					} else if (args [0].equalsIgnoreCase("BLUE")){
+						IDTeamManager.setSpawn(Colour.BLUE, l);
+						sender.sendMessage("Blue spawn set!");
+						return true;
+					}else {
+						sender.sendMessage("Not a valid colour!");
+						return true;
 					}
 				} else {
 					return false;

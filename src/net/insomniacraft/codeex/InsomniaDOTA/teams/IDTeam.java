@@ -2,6 +2,7 @@ package net.insomniacraft.codeex.InsomniaDOTA.teams;
 
 import java.util.ArrayList;
 
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 public class IDTeam {
@@ -11,12 +12,14 @@ public class IDTeam {
 	private final Colour colour;
 	private ArrayList<Player> players;
 	private ArrayList<Player> readyPlayers;
+	private Location spawn;
 	
 	//Constructor
 	public IDTeam(Colour c) {
 		this.colour = c;
 		players = new ArrayList<Player>();
 		readyPlayers = new ArrayList<Player>();
+		spawn = null;
 	}
 	
 	public void addPlayer(Player p) {
@@ -77,6 +80,14 @@ public class IDTeam {
 			pString[i] = players.get(i).getName();
 		}
 		return pString;
+	}
+	
+	public void setSpawn (Location loc){
+		this.spawn = loc;
+	}
+	
+	public Location getSpawn (){
+		return this.spawn;
 	}
 	
 	public static Colour getColourFromStr(String s) {

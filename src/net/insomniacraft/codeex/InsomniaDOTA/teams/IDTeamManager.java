@@ -11,6 +11,7 @@ import net.insomniacraft.codeex.InsomniaDOTA.teams.IDTeam.Colour;
 import net.insomniacraft.codeex.InsomniaDOTA.InsomniaDOTA;
 
 
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 
@@ -110,6 +111,21 @@ public class IDTeamManager {
 		return false;
 	}
 	
+	public static void setSpawn(Colour col, Location l) {
+		if (col.toString().equals("RED")) {
+			red.setSpawn(l);
+		} else if (col.toString().equals("BLUE")){
+			blue.setSpawn(l);
+		}
+	}
+	public static Location getSpawn(Colour col){
+		if (col.toString().equals("RED")) {
+			return red.getSpawn();
+		} else if (col.toString().equals("BLUE")){
+			return blue.getSpawn();
+		}
+		return null;
+	}
 	public static void save() throws IOException {
 		redFile.createNewFile();
 		blueFile.createNewFile();
@@ -123,11 +139,19 @@ public class IDTeamManager {
 		for (String s: blue.toStringArr()) {
 			blueString = blueString + s + ";";
 		}
+		bpw.println(blueString);
+		Location bl = blue.getSpawn();
+		if (bl != null) {
+			bpw.println(bl.getX() + ";" + bl.getY() + ";" + bl.getZ());
+		}
 		for (String s: red.toStringArr()) {
 			redString = redString + s + ";";
 		}
 		rpw.println(redString);
-		bpw.println(blueString);
+		Location rl = red.getSpawn();
+		if (rl != null) {
+			rpw.println(rl.getX() + ";" + rl.getY() + ";" + rl.getZ());
+		}
 		rpw.close();
 		bpw.close();
 		System.out.println("[DEBUG] Successfully saved teams!");
@@ -137,14 +161,19 @@ public class IDTeamManager {
 		if (!(redFile.exists()) || !(blueFile.exists())) {
 			return;
 		}
+		//Read info from file
 		FileReader rfw = new FileReader(redFile);
 		FileReader bfw = new FileReader(blueFile);
 		BufferedReader rbw = new BufferedReader(rfw);
 		BufferedReader bbw = new BufferedReader(bfw);
 		String blueString = bbw.readLine();
+		String blueSpawn =bbw.readLine();
 		String redString = rbw.readLine();
+		String redSpawn = rbw.readLine();
 		rbw.close();
 		bbw.close();
+		
+		//Set/process players
 		String[] blueSP = blueString.split(";");
 		String[] redSP = redString.split(";");
 		
@@ -173,6 +202,23 @@ public class IDTeamManager {
 				setTeam(Colour.NEUTRAL, p);
 			}
 		}
+		//Set/process spawns
+		if (blueSpawn != null){
+			String [] bSpawnSP = blueSpawn.split(";");
+			double x = Double.parseDouble(bSpawnSP [0]);
+			double y = Double.parseDouble(bSpawnSP [1]);
+			double z = Double.parseDouble(bSpawnSP [2]);
+			Location l = new Location (InsomniaDOTA.s.getWorld("dota"), x, y,z);
+			blue.setSpawn(l);
+		}
+		if (redSpawn != null){
+			String [] rSpawnSP = redSpawn.split(";");
+			double x = Double.parseDouble(rSpawnSP [0]);
+			double y = Double.parseDouble(rSpawnSP [1]);
+			double z = Double.parseDouble(rSpawnSP [2]);
+			Location l = new Location (InsomniaDOTA.s.getWorld("dota"), x, y,z);
+		}
+		
 		System.out.println("[DEBUG] Successfully loaded teams!");
 	}
 	
