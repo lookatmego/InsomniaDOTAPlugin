@@ -32,6 +32,9 @@ commands:
   teamswitch:
    description: Used to switch a player from one team to the other.
    usage: Usage is /teamswitch [player]
+  b:
+   description: Used to recall.
+   usage: Usage is /b
 permissions:
   DOTA.play:
    description: Enables a person to join and play DOTA games.
