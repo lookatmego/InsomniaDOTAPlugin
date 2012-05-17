@@ -5,6 +5,7 @@ import java.util.Random;
 
 import net.insomniacraft.codeex.InsomniaDOTA.teams.IDTeamManager;
 import net.insomniacraft.codeex.InsomniaDOTA.teams.IDTeam.Colour;
+import net.insomniacraft.codeex.InsomniaDOTA.chat.IDChatManager;
 import net.insomniacraft.codeex.InsomniaDOTA.structures.turrets.*;
 
 import org.bukkit.Bukkit;
@@ -115,8 +116,23 @@ public class IDCommands implements CommandExecutor {
 						((Player) sender).giveExp(4624);
 					}
 				}
-
 				// RECALL COMMAND END
+				
+				//ALL CHAT COMMAND
+				if (cmd.getName().equalsIgnoreCase("all")) {
+					String msg = "";
+					for (int i = 0; i < args.length; i++) {
+						if (i == 0) {
+							msg = args[0];
+						} else {
+							msg = msg + " " + args[i];
+						}
+					}
+					IDChatManager.addToAllChat((Player)sender);
+					((Player)sender).chat(msg);
+					return true;
+				}
+				//ALL CHAT COMMAND END
 			}
 			// DOTA PLAY PERMISSIONS END
 		}

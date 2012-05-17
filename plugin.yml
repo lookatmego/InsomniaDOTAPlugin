@@ -2,7 +2,7 @@ name: InsomniaDOTA
 main: net.insomniacraft.codeex.InsomniaDOTA.InsomniaDOTA
 version: 0.1b
 description: Plugin that automates and controls DOTA elements of InsomniaCraft DOTA server.
-authors: [JazzKr]
+authors: [JazzKr, ninjaturtlez]
 website: codeex.insomniacraft.net
 commands:
   setup:
@@ -26,9 +26,12 @@ commands:
   reset:
    description: Used to reset the game.
    usage: Usage is /reset
-  b:
-   description: Used to recall to your teams spawn.
-   usage: Usage is /b
+  all:
+   description: Used to talk in all chat.
+   usage: Usage is /all
+  teamswitch:
+   description: Used to switch a player from one team to the other.
+   usage: Usage is /teamswitch [player]
 permissions:
   DOTA.play:
    description: Enables a person to join and play DOTA games.
