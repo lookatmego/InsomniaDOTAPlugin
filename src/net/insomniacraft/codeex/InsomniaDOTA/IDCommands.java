@@ -96,20 +96,26 @@ public class IDCommands implements CommandExecutor {
 				if (cmd.getName().equalsIgnoreCase("recall")) {
 					Colour col = IDTeamManager.getTeam((Player) sender);
 					Location l = IDTeamManager.getSpawn(col);
-					Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(p, new Runnable() {
+					Bukkit.getServer().getScheduler()
+						.scheduleSyncDelayedTask(p, new Runnable() {
 								public void run() {
-									float exp = 225;
-									try {
-										Thread.sleep(31);
-									} catch (Exception e) {
-										System.out.println("[DEBUG] ");
+									for (int x = 0; x < 89; x++){
+										try {
+											Thread.sleep(13);
+										} catch (Exception e) {
+											System.out.println("[DEBUG] ");
+										}
+										player.setExp(-2);
+										if (player.getExp() == 2) {
+											break;
+										}
 									}
-									player.setExp(exp);
-									exp -= 1;
 								}
 							}, 1L);
 					if (l != null) {
 						((Player) sender).teleport(l);
+						((Player) sender).setExp(0);
+						((Player) sender).giveExp(4625);
 					}
 				}
 

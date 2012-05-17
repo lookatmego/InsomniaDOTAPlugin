@@ -44,15 +44,15 @@ public class IDListener implements Listener {
 	}
 	@EventHandler
 	public void onPlayerSpawn(PlayerRespawnEvent e) {
-		Player p = e.getPlayer();
+		final Player p = e.getPlayer();
 
-	/*	Bukkit.getServer().getScheduler()
+		Bukkit.getServer().getScheduler()
 				.scheduleSyncDelayedTask(pl, new Runnable() {
 					public void run() {
-						p.giveExp(225);
+						p.giveExp(4625);
 					}
 				}, 20L);
-	*/
+	
 		Colour col = IDTeamManager.getTeam(p);
 		Location l = IDTeamManager.getSpawn(col);
 		if (l != null){
@@ -83,7 +83,7 @@ public class IDListener implements Listener {
 					damager.sendMessage(ChatColor.DARK_RED + "It's not that dark outside!");
 					break;
 				case 3: 
-					damager.sendMessage(ChatColor.DARK_RED + "What, are you blind?");
+					damager.sendMessage(ChatColor.DARK_RED + "What, are you blind? I'm a friendly!");
 					break;
 			}
 			evt.setCancelled(true);

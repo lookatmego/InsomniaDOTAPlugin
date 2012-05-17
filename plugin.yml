@@ -4,7 +4,6 @@ version: 0.1b
 description: Plugin that automates and controls DOTA elements of InsomniaCraft DOTA server.
 authors: [JazzKr, ninjaturtlez]
 website: codeex.insomniacraft.net
-softdepend: [LogBlock]
 commands:
   setup:
    description: Used to trigger setup mode on server to modify weak points.
