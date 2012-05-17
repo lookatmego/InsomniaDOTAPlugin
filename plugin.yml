@@ -27,7 +27,7 @@ commands:
    description: Used to reset the game.
    usage: Usage is /reset
 permissions:
-   DOTA.play:
+  DOTA.play:
    description: Enables a person to join and play DOTA games.
    default: op
   DOTA.admin:

@@ -61,14 +61,18 @@ public class IDListener implements Listener {
 	}
 	@EventHandler
 	public void onPlayerHit (EntityDamageByEntityEvent evt){
-		if (!(evt instanceof Player)){
+		//If both involved are not players then we are not interested
+		if (!(evt.getDamager() instanceof Player) || !(evt.getEntity() instanceof Player)){
 			return;
 		}
-		Entity entity = evt.getDamager();
-		Player player = (Player) entity;
-		Player damager = (Player) entity;
+		//If its not either an attack or projectile we dont care
+		if (!(evt.getCause().toString().equals("ENTITY_ATTACK")) || !(evt.getCause().toString().equals("PROJECTILE"))) {
+			return;
+		}
+		Player player = (Player) evt.getEntity();
+		Player damager = (Player) evt.getDamager();
 		Colour pCol = IDTeamManager.getTeam(player);
-		Colour dCol = IDTeamManager.getTeam(player);
+		Colour dCol = IDTeamManager.getTeam(damager);
 		Random r = new Random();
 		int num = r.nextInt(4);
 		if (pCol.equals(dCol)){
@@ -88,8 +92,8 @@ public class IDListener implements Listener {
 			}
 			evt.setCancelled(true);
 		} else {
-			player.sendMessage("[DEBUG] You have been hit");
-			damager.sendMessage("[DEBUG] You have hit an enemy");
+			player.sendMessage("[DEBUG] You have been hit!");
+			damager.sendMessage("[DEBUG] You have hit an enemy!");
 		}
 	}
 	@EventHandler
