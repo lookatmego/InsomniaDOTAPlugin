@@ -44,14 +44,15 @@ public class IDListener implements Listener {
 	}
 	@EventHandler
 	public void onPlayerSpawn(PlayerRespawnEvent e) {
-		final Player p = e.getPlayer();
+		Player p = e.getPlayer();
 
-		Bukkit.getServer().getScheduler()
+	/*	Bukkit.getServer().getScheduler()
 				.scheduleSyncDelayedTask(pl, new Runnable() {
 					public void run() {
 						p.giveExp(225);
 					}
 				}, 20L);
+	*/
 		Colour col = IDTeamManager.getTeam(p);
 		Location l = IDTeamManager.getSpawn(col);
 		if (l != null){
@@ -59,7 +60,7 @@ public class IDListener implements Listener {
 		}
 	}
 	@EventHandler
-	public void onPlayerHit (EntityDamageByEntityEvent  evt){
+	public void onPlayerHit (EntityDamageByEntityEvent evt){
 		if (!(evt instanceof Player)){
 			return;
 		}
