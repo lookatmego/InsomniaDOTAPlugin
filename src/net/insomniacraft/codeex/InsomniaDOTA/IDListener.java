@@ -49,7 +49,7 @@ public class IDListener implements Listener {
 		Bukkit.getServer().getScheduler()
 				.scheduleSyncDelayedTask(pl, new Runnable() {
 					public void run() {
-						p.giveExp(4625);
+						p.giveExp(4624);
 					}
 				}, 20L);
 	

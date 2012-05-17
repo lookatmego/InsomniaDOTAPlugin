@@ -26,6 +26,9 @@ commands:
   reset:
    description: Used to reset the game.
    usage: Usage is /reset
+  b:
+   description: Used to recall to your teams spawn.
+   usage: Usage is /b
 permissions:
   DOTA.play:
    description: Enables a person to join and play DOTA games.

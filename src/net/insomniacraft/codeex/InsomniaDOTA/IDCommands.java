@@ -90,10 +90,7 @@ public class IDCommands implements CommandExecutor {
 				// RDY COMMAND END
 
 				// RECALL COMMAND
-				// exp needed to get to level 50 =
-				// exp to 51 =
-				// exp for 51 = 
-				if (cmd.getName().equalsIgnoreCase("recall")) {
+				if (cmd.getName().equalsIgnoreCase("b")) {
 					Colour col = IDTeamManager.getTeam((Player) sender);
 					Location l = IDTeamManager.getSpawn(col);
 					Bukkit.getServer().getScheduler()
@@ -115,7 +112,7 @@ public class IDCommands implements CommandExecutor {
 					if (l != null) {
 						((Player) sender).teleport(l);
 						((Player) sender).setExp(0);
-						((Player) sender).giveExp(4625);
+						((Player) sender).giveExp(4624);
 					}
 				}
 
