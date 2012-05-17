@@ -7,6 +7,7 @@ import net.insomniacraft.codeex.InsomniaDOTA.teams.IDTeamManager;
 import net.insomniacraft.codeex.InsomniaDOTA.teams.IDTeam.Colour;
 import net.insomniacraft.codeex.InsomniaDOTA.structures.turrets.*;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.command.*;
@@ -25,7 +26,7 @@ public class IDCommands implements CommandExecutor {
 	}
 
 	@Override
-	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+	public boolean onCommand(CommandSender sender, Command cmd, String label,String[] args) {
 		// Player Commands
 		if (sender instanceof Player) {
 			final Player player = (Player) sender;
@@ -36,7 +37,8 @@ public class IDCommands implements CommandExecutor {
 				// JOIN COMMAND
 				if (cmd.getName().equalsIgnoreCase("join")) {
 					Colour c = IDTeamManager.getTeam(player);
-					if ((c.toString().equals("RED")) || (c.toString().equals("BLUE"))) {
+					if ((c.toString().equals("RED"))
+							|| (c.toString().equals("BLUE"))) {
 						player.sendMessage("You are already on a team!");
 						return true;
 					}
@@ -79,7 +81,8 @@ public class IDCommands implements CommandExecutor {
 						if (IDTeamManager.isPlayerReady(player)) {
 							player.sendMessage("You are now ready.");
 						} else {
-							System.out.println("[DEBUG] Player was not set to ready.");
+							System.out
+									.println("[DEBUG] Player was not set to ready.");
 						}
 						return true;
 					}
@@ -87,12 +90,31 @@ public class IDCommands implements CommandExecutor {
 				// RDY COMMAND END
 
 				// RECALL COMMAND
-				//Sorry george eclipse formatting did this!!!
-				/*
-				 * if (cmd.getName().equalsIgnoreCase("recall")) { boolean isRecalling = false; Colour col = IDTeamManager.getTeam((Player) sender); Location l = IDTeamManager.getSpawn(col); Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(p, new Runnable() { public void run() {
-				 * 
-				 * float exp = 225; try{ Thread.sleep(31); }catch (Exception e){ System.out.println("[DEBUG] "); } player.setExp(exp); exp -= 1; } }, 1L); if (l != null){ ((Player)sender).teleport(l); } }
-				 */
+				// Sorry george eclipse formatting did this!!!
+				// exp needed to get to level 50 =
+				// exp to 51 =
+				// exp for 51 = 
+				if (cmd.getName().equalsIgnoreCase("recall")) {
+					boolean isRecalling = false;
+					Colour col = IDTeamManager.getTeam((Player) sender);
+					Location l = IDTeamManager.getSpawn(col);
+					Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(p, new Runnable() {
+								public void run() {
+									float exp = 225;
+									try {
+										Thread.sleep(31);
+									} catch (Exception e) {
+										System.out.println("[DEBUG] ");
+									}
+									player.setExp(exp);
+									exp -= 1;
+								}
+							}, 1L);
+					if (l != null) {
+						((Player) sender).teleport(l);
+					}
+				}
+
 				// RECALL COMMAND END
 			}
 			// DOTA PLAY PERMISSIONS END
@@ -189,13 +211,15 @@ public class IDCommands implements CommandExecutor {
 					setupPlayer = ((Player) sender).getName();
 					return true;
 				} else if (setup == true) {
-					if (setupPlayer.equalsIgnoreCase(((Player) sender).getName())) {
+					if (setupPlayer.equalsIgnoreCase(((Player) sender)
+							.getName())) {
 						sender.sendMessage("Now exiting setup mode.");
 						setup = false;
 						IDBlockSelector.clearBlocks();
 						return true;
 					} else {
-						sender.sendMessage("Only " + setupPlayer + " or console can exit setup mode!");
+						sender.sendMessage("Only " + setupPlayer
+								+ " or console can exit setup mode!");
 						return true;
 					}
 				}
@@ -211,7 +235,8 @@ public class IDCommands implements CommandExecutor {
 							if (t == null) {
 								sender.sendMessage("Blue turret is null!");
 							} else {
-								sender.sendMessage(t.getTeam() + " " + t.getId() + " HP:" + t.getHealth());
+								sender.sendMessage(t.getTeam() + " "
+										+ t.getId() + " HP:" + t.getHealth());
 							}
 						}
 						return true;
@@ -220,7 +245,8 @@ public class IDCommands implements CommandExecutor {
 							if (t == null) {
 								sender.sendMessage("Red turret is null!");
 							} else {
-								sender.sendMessage(t.getTeam() + " " + t.getId() + " HP:" + t.getHealth());
+								sender.sendMessage(t.getTeam() + " "
+										+ t.getId() + " HP:" + t.getHealth());
 							}
 						}
 						return true;
@@ -242,15 +268,20 @@ public class IDCommands implements CommandExecutor {
 				if (!(args.length == 2)) {
 					return false;
 				}
-				//If turret, set turret
-				if (args[1].equalsIgnoreCase("TOP_OUTER") || args[1].equalsIgnoreCase("TOP_INNER") || args[1].equalsIgnoreCase("MID_OUTER") || args[1].equalsIgnoreCase("MID_INNER") ||
-						args[1].equalsIgnoreCase("BOT_OUTER") || args[1].equalsIgnoreCase("BOT_INNER")) {
+				// If turret, set turret
+				if (args[1].equalsIgnoreCase("TOP_OUTER")
+						|| args[1].equalsIgnoreCase("TOP_INNER")
+						|| args[1].equalsIgnoreCase("MID_OUTER")
+						|| args[1].equalsIgnoreCase("MID_INNER")
+						|| args[1].equalsIgnoreCase("BOT_OUTER")
+						|| args[1].equalsIgnoreCase("BOT_INNER")) {
 					ArrayList<Block> bl = IDBlockSelector.getSelected();
 					IDTurretParams itp;
 					try {
-						itp = new IDTurretParams(bl, args[0], args[1], IDTurretManager.getDefaultHealth());
+						itp = new IDTurretParams(bl, args[0], args[1],
+								IDTurretManager.getDefaultHealth());
 					} catch (Exception e) {
-						sender.sendMessage("Error: "+e.getMessage());
+						sender.sendMessage("Error: " + e.getMessage());
 						return true;
 					}
 					if (itp != null) {
@@ -259,29 +290,32 @@ public class IDCommands implements CommandExecutor {
 					}
 					IDBlockSelector.clearBlocks();
 				}
-				//If nexus, set nexus
+				// If nexus, set nexus
 				else if (args[1].equalsIgnoreCase("NEXUS")) {
 					if (args[0].equalsIgnoreCase("RED")) {
-						IDGameManager.setNexus(IDBlockSelector.getArraySelected(), Colour.RED, IDGameManager.getNexusDefHealth());
+						IDGameManager.setNexus(
+								IDBlockSelector.getArraySelected(), Colour.RED,
+								IDGameManager.getNexusDefHealth());
 						sender.sendMessage("Red nexus set!");
 						IDBlockSelector.clearBlocks();
 						return true;
 					} else if (args[0].equalsIgnoreCase("BLUE")) {
-						IDGameManager.setNexus(IDBlockSelector.getArraySelected(), Colour.BLUE, IDGameManager.getNexusDefHealth());
+						IDGameManager.setNexus(
+								IDBlockSelector.getArraySelected(),
+								Colour.BLUE, IDGameManager.getNexusDefHealth());
 						sender.sendMessage("Blue nexus set!");
 						IDBlockSelector.clearBlocks();
 						return true;
 					} else {
 						return false;
 					}
-				} 
-				//If spawn, set spawn
+				}
+				// If spawn, set spawn
 				else if (args[1].equalsIgnoreCase("SPAWN")) {
 					Location l = ((Player) sender).getLocation();
 					if (args[0].equalsIgnoreCase("RED")) {
 						IDTeamManager.setSpawn(Colour.RED, l);
-						sender.sendMessage("Red spawn set!");
-						return true;
+						sender.sendMessage("Red spawn set!");						return true;
 					} else if (args[0].equalsIgnoreCase("BLUE")) {
 						IDTeamManager.setSpawn(Colour.BLUE, l);
 						sender.sendMessage("Blue spawn set!");
@@ -291,7 +325,7 @@ public class IDCommands implements CommandExecutor {
 						return true;
 					}
 				}
-				//If none of the above...
+				// If none of the above...
 				else {
 					return false;
 				}
@@ -312,7 +346,7 @@ public class IDCommands implements CommandExecutor {
 			}
 			// CLEAR COMMAND END
 		}
-		//DOTA ADMIN PERMISSIONS END
+		// DOTA ADMIN PERMISSIONS END
 		return true;
-	}	
+	}
 }
