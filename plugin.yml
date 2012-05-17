@@ -2,7 +2,7 @@ name: InsomniaDOTA
 main: net.insomniacraft.codeex.InsomniaDOTA.InsomniaDOTA
 version: 0.1b
 description: Plugin that automates and controls DOTA elements of InsomniaCraft DOTA server.
-authors: [JazzKr, ninjaturtlez]
+authors: [JazzKr]
 website: codeex.insomniacraft.net
 commands:
   setup:
