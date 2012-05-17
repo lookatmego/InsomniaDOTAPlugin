@@ -60,7 +60,7 @@ public class IDCommands implements CommandExecutor {
 				}
 				// JOIN COMMAND END
 
-				// RDY COMMAND
+				// READY COMMAND
 				if (cmd.getName().equalsIgnoreCase("rdy")) {
 					Colour c = IDTeamManager.getTeam(player);
 					if (c.toString().equals("NEUTRAL")) {
