@@ -26,6 +26,12 @@ commands:
   reset:
    description: Used to reset the game.
    usage: Usage is /reset
+  all:
+   description: Used to talk in all chat.
+   usage: Usage is /all
+  teamswitch:
+   description: Used to switch a player from one team to the other.
+   usage: Usage is /teamswitch [player]
 permissions:
   DOTA.play:
    description: Enables a person to join and play DOTA games.

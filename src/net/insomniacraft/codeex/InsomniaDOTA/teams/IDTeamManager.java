@@ -6,6 +6,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 
 import net.insomniacraft.codeex.InsomniaDOTA.teams.IDTeam.Colour;
 import net.insomniacraft.codeex.InsomniaDOTA.InsomniaDOTA;
@@ -82,6 +83,30 @@ public class IDTeamManager {
 			return Colour.NEUTRAL;
 		}
 		return null;
+	}
+	
+	public static ArrayList<Player> getBluePlayers() {
+		ArrayList<Player> b = new ArrayList<Player>();
+		for (Player p: blue.getPlayers()) {
+			b.add(p);
+		}
+		return b;
+	}
+	
+	public static ArrayList<Player> getRedPlayers() {
+		ArrayList<Player> r = new ArrayList<Player>();
+		for (Player p: red.getPlayers()) {
+			r.add(p);
+		}
+		return r;
+	}
+	
+	public static ArrayList<Player> getNeutralPlayers() {
+		ArrayList<Player> n = new ArrayList<Player>();
+		for (Player p: neutral.getPlayers()) {
+			n.add(p);
+		}
+		return n;
 	}
 	
 	public static int getRedCount() {

@@ -2,6 +2,7 @@ package net.insomniacraft.codeex.InsomniaDOTA;
 
 import java.util.Random;
 
+import net.insomniacraft.codeex.InsomniaDOTA.chat.IDChatManager;
 import net.insomniacraft.codeex.InsomniaDOTA.structures.nexus.IDNexus;
 import net.insomniacraft.codeex.InsomniaDOTA.structures.turrets.IDTurret;
 import net.insomniacraft.codeex.InsomniaDOTA.structures.turrets.IDTurretManager;
@@ -29,9 +30,9 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.util.BlockIterator;
 
 public class IDListener implements Listener {
-	
+
 	Plugin pl;
-	
+
 	public IDListener(Plugin p) {
 		this.pl = p;
 	}
@@ -46,12 +47,12 @@ public class IDListener implements Listener {
 		final Player p = e.getPlayer();
 
 		Bukkit.getServer().getScheduler()
-				.scheduleSyncDelayedTask(pl, new Runnable() {
-					public void run() {
-						p.giveExp(4625);
-					}
-				}, 20L);
-	
+		.scheduleSyncDelayedTask(pl, new Runnable() {
+			public void run() {
+				p.giveExp(4625);
+			}
+		}, 20L);
+
 		Colour col = IDTeamManager.getTeam(p);
 		Location l = IDTeamManager.getSpawn(col);
 		if (l != null){
@@ -76,18 +77,18 @@ public class IDListener implements Listener {
 		int num = r.nextInt(4);
 		if (pCol.equals(dCol)){
 			switch (num){
-				case 0: 
-					damager.sendMessage(ChatColor.DARK_RED + "That's a friendly!");
-					break;
-				case 1: 
-					damager.sendMessage(ChatColor.DARK_RED + "Watch your fire!");
-					break;
-				case 2: 
-					damager.sendMessage(ChatColor.DARK_RED + "It's not that dark outside!");
-					break;
-				case 3: 
-					damager.sendMessage(ChatColor.DARK_RED + "What, are you blind? I'm a friendly!");
-					break;
+			case 0: 
+				damager.sendMessage(ChatColor.DARK_RED + "That's a friendly!");
+				break;
+			case 1: 
+				damager.sendMessage(ChatColor.DARK_RED + "Watch your fire!");
+				break;
+			case 2: 
+				damager.sendMessage(ChatColor.DARK_RED + "It's not that dark outside!");
+				break;
+			case 3: 
+				damager.sendMessage(ChatColor.DARK_RED + "What, are you blind? I'm a friendly!");
+				break;
 			}
 			evt.setCancelled(true);
 		} else {
@@ -103,7 +104,7 @@ public class IDListener implements Listener {
 		}
 		IDTeamManager.removeFromTeam(p);
 	}
-	
+
 	@EventHandler
 	public void onPlayerInteract(PlayerInteractEvent e) {
 		if (!IDCommands.setup) {
@@ -128,23 +129,32 @@ public class IDListener implements Listener {
 		IDBlockSelector.addBlock(b);
 		e.getPlayer().sendMessage(IDBlockSelector.getSize()+" block(s) selected.");
 	}
-	
+
 	@EventHandler
 	public void onPlayerChat(PlayerChatEvent e) {
 		Player p = e.getPlayer();
 		String m = e.getMessage();
 		Colour col = IDTeamManager.getTeam(p);
-		if (col.toString().equals("BLUE")) {
-			e.setFormat(ChatColor.BLUE+"<"+p.getName()+"> "+m);
+		if (!IDChatManager.isAllChat(p)) {
+			//If chat event is from blue player, remove red and neutral from recipients
+			if (col.toString().equals("BLUE")) {
+				e.getRecipients().removeAll(IDTeamManager.getRedPlayers());
+				e.getRecipients().removeAll(IDTeamManager.getNeutralPlayers());
+			}
+			//If chat event is from red player, remove blue and neutral from recipients
+			else if (col.toString().equals("RED")) {
+				e.getRecipients().removeAll(IDTeamManager.getBluePlayers());
+				e.getRecipients().removeAll(IDTeamManager.getNeutralPlayers());
+			}
+			//If chat event is from neutral player, remove red and blue from recipients
+			else if (col.toString().equals("NEUTRAL")) {
+				e.getRecipients().removeAll(IDTeamManager.getBluePlayers());
+				e.getRecipients().removeAll(IDTeamManager.getRedPlayers());
+			}
 		}
-		else if (col.toString().equals("RED")) {
-			e.setFormat(ChatColor.RED+"<"+p.getName()+"> "+m);
-		}
-		else if (col.toString().equals("NEUTRAL")) {
-			e.setFormat(ChatColor.GRAY+"<"+p.getName()+"> "+m);
-		}
+		e.setFormat(IDChatManager.getFormat(p, m));
 	}
-	
+
 	@EventHandler
 	public void onArrowShot(ProjectileHitEvent e) {
 		Entity projectile = e.getEntity();
