@@ -18,7 +18,7 @@ public class IDCommands implements CommandExecutor {
 
 	public static boolean setup = false;
 	public static String setupPlayer = null;
-
+	public static boolean isRecalling = false;
 	Plugin p;
 
 	public IDCommands(Plugin p) {
@@ -90,12 +90,10 @@ public class IDCommands implements CommandExecutor {
 				// RDY COMMAND END
 
 				// RECALL COMMAND
-				// Sorry george eclipse formatting did this!!!
 				// exp needed to get to level 50 =
 				// exp to 51 =
 				// exp for 51 = 
 				if (cmd.getName().equalsIgnoreCase("recall")) {
-					boolean isRecalling = false;
 					Colour col = IDTeamManager.getTeam((Player) sender);
 					Location l = IDTeamManager.getSpawn(col);
 					Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(p, new Runnable() {

@@ -1,5 +1,7 @@
 package net.insomniacraft.codeex.InsomniaDOTA;
 
+import java.util.Random;
+
 import net.insomniacraft.codeex.InsomniaDOTA.structures.nexus.IDNexus;
 import net.insomniacraft.codeex.InsomniaDOTA.structures.turrets.IDTurret;
 import net.insomniacraft.codeex.InsomniaDOTA.structures.turrets.IDTurretManager;
@@ -16,6 +18,8 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -38,7 +42,6 @@ public class IDListener implements Listener {
 		Player p = e.getPlayer();
 		IDTeamManager.setTeam(Colour.NEUTRAL, p);
 	}
-	
 	@EventHandler
 	public void onPlayerSpawn(PlayerRespawnEvent e) {
 		final Player p = e.getPlayer();
@@ -55,7 +58,39 @@ public class IDListener implements Listener {
 			p.teleport(l);
 		}
 	}
-	
+	@EventHandler
+	public void onPlayerHit (EntityDamageByEntityEvent  evt){
+		if (!(evt instanceof Player)){
+			return;
+		}
+		Entity entity = evt.getDamager();
+		Player player = (Player) entity;
+		Player damager = (Player) entity;
+		Colour pCol = IDTeamManager.getTeam(player);
+		Colour dCol = IDTeamManager.getTeam(player);
+		Random r = new Random();
+		int num = r.nextInt(4);
+		if (pCol.equals(dCol)){
+			switch (num){
+				case 0: 
+					damager.sendMessage(ChatColor.DARK_RED + "That's a friendly!");
+					break;
+				case 1: 
+					damager.sendMessage(ChatColor.DARK_RED + "Watch your fire!");
+					break;
+				case 2: 
+					damager.sendMessage(ChatColor.DARK_RED + "It's not that dark outside!");
+					break;
+				case 3: 
+					damager.sendMessage(ChatColor.DARK_RED + "What, are you blind?");
+					break;
+			}
+			evt.setCancelled(true);
+		} else {
+			player.sendMessage("[DEBUG] You have been hit");
+			damager.sendMessage("[DEBUG] You have hit an enemy");
+		}
+	}
 	@EventHandler
 	public void onPlayerQuit(PlayerQuitEvent e) {
 		Player p = e.getPlayer();
