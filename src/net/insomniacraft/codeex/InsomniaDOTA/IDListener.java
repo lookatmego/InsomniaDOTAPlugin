@@ -49,7 +49,7 @@ public class IDListener implements Listener {
 		Bukkit.getServer().getScheduler()
 		.scheduleSyncDelayedTask(pl, new Runnable() {
 			public void run() {
-				p.giveExp(4625);
+				p.giveExp(4624);
 			}
 		}, 20L);
 
@@ -76,19 +76,19 @@ public class IDListener implements Listener {
 		Random r = new Random();
 		int num = r.nextInt(4);
 		if (pCol.equals(dCol)){
-			switch (num){
-			case 0: 
-				damager.sendMessage(ChatColor.DARK_RED + "That's a friendly!");
-				break;
-			case 1: 
-				damager.sendMessage(ChatColor.DARK_RED + "Watch your fire!");
-				break;
-			case 2: 
-				damager.sendMessage(ChatColor.DARK_RED + "It's not that dark outside!");
-				break;
-			case 3: 
-				damager.sendMessage(ChatColor.DARK_RED + "What, are you blind? I'm a friendly!");
-				break;
+			switch (num) {
+				case 0:
+					damager.sendMessage(ChatColor.DARK_RED + "That's a friendly!");
+					break;
+				case 1:
+					damager.sendMessage(ChatColor.DARK_RED + "Watch your fire!");
+					break;
+				case 2:
+					damager.sendMessage(ChatColor.DARK_RED + "It's not that dark outside!");
+					break;
+				case 3:
+					damager.sendMessage(ChatColor.DARK_RED + "What, are you blind? I'm a friendly!");
+					break;
 			}
 			evt.setCancelled(true);
 		} else {
