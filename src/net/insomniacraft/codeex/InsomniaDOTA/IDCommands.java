@@ -93,28 +93,28 @@ public class IDCommands implements CommandExecutor {
 				// RECALL COMMAND
 				if (cmd.getName().equalsIgnoreCase("b")) {
 					Colour col = IDTeamManager.getTeam((Player) sender);
-					Location l = IDTeamManager.getSpawn(col);
+					final Location l = IDTeamManager.getSpawn(col);
+					final Player pl = (Player) sender;
 					Bukkit.getServer().getScheduler()
-						.scheduleSyncDelayedTask(p, new Runnable() {
-								public void run() {
-									for (int x = 0; x < 89; x++){
-										try {
-											Thread.sleep(13);
-										} catch (Exception e) {
-											System.out.println("[DEBUG] ");
-										}
-										player.setExp(-2);
-										if (player.getExp() == 2) {
-											break;
-										}
-									}
+					.scheduleAsyncDelayedTask(p, new Runnable() {
+						public void run() {
+							for (int x = 0;x <178; x++){
+								try{
+									Thread.sleep(13);
+								}catch (Exception e){
+									System.out.println("[DEBUG] ");
 								}
-							}, 1L);
-					if (l != null) {
-						((Player) sender).teleport(l);
-						((Player) sender).setExp(0);
-						((Player) sender).giveExp(4624);
-					}
+								pl.giveExp(-1);
+								System.out.println(pl.getExp());
+							}
+							if (l != null) {
+								pl.teleport(l);
+								pl.setExp(0);
+								pl.giveExp(4624);
+							}
+						}
+					});
+					return true;
 				}
 				// RECALL COMMAND END
 				

@@ -30,6 +30,7 @@ public class InsomniaDOTA extends JavaPlugin {
 		getCommand("info").setExecutor(commands);
 		getCommand("all").setExecutor(commands);
 		getCommand("teamswitch").setExecutor(commands);
+		getCommand("b").setExecutor(commands);
 		
 		getServer().getPluginManager().registerEvents(listener, this);
 		
