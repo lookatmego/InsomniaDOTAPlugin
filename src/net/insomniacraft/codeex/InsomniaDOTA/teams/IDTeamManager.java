@@ -13,7 +13,9 @@ import net.insomniacraft.codeex.InsomniaDOTA.InsomniaDOTA;
 
 
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 
 public class IDTeamManager {
@@ -257,14 +259,17 @@ public class IDTeamManager {
 		if (col.toString().equals("BLUE")) {
 			blue.addPlayer(p);
 			System.out.println("[DEBUG] Adding "+p.getName()+" to team blue!");
+			p.getInventory().setHelmet(new ItemStack(Material.WOOL, 1, (short)0, (Byte)Byte.valueOf("11")));
 		}
 		else if (col.toString().equals("RED")) {
 			red.addPlayer(p);
 			System.out.println("[DEBUG] Adding "+p.getName()+" to team red!");
+			p.getInventory().setHelmet(new ItemStack(Material.WOOL, 1, (short)0, (Byte)Byte.valueOf("14")));
 		}
 		else if (col.toString().equals("NEUTRAL")) {
 			neutral.addPlayer(p);
 			System.out.println("[DEBUG] Adding "+p.getName()+" to team neutral!");
+			p.getInventory().setHelmet(new ItemStack(Material.AIR, 1));
 		}
 		countPlayers();
 	}
