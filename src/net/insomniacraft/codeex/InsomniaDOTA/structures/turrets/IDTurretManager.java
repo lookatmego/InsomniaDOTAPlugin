@@ -8,10 +8,12 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 
+import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
 
+import net.insomniacraft.codeex.DragonBurials.BurialSites.BurialSite;
 import net.insomniacraft.codeex.InsomniaDOTA.IDCommands;
 import net.insomniacraft.codeex.InsomniaDOTA.InsomniaDOTA;
 import net.insomniacraft.codeex.InsomniaDOTA.teams.IDTeam;
@@ -362,6 +364,32 @@ public class IDTurretManager {
 		//If it passes all until now, then player can damage turret
 		InsomniaDOTA.s.broadcastMessage(tCol.toString()+" "+tID.toString()+" has been hit!");
 		return true;
+	}
+	
+	public static IDTurret getTurretNear(Location l) {
+		ArrayList<IDTurret> nearTurrets = new ArrayList<IDTurret>();
+		for (IDTurret t: blueTurrets) {
+			if (t == null) {
+				continue;
+			}
+			Location lT = t.getTurretBlock().getLocation();
+			if (lT.distance(l) < 15) {
+				nearTurrets.add(t);
+			}
+		}
+		for (IDTurret t: redTurrets) {
+			if (t == null) {
+				continue;
+			}
+			Location lT = t.getTurretBlock().getLocation();
+			if (lT.distance(l) < 15) {
+				nearTurrets.add(t);
+			}
+		}
+		if (nearTurrets.isEmpty()) {
+			return null;
+		}
+		return nearTurrets.get(0);
 	}
 
 	// Method that finds the next null index in a turret array, if none is found return -1

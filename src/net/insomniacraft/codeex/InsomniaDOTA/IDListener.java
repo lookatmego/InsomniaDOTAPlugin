@@ -18,12 +18,14 @@ import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.plugin.Plugin;
@@ -59,14 +61,12 @@ public class IDListener implements Listener {
 			p.teleport(l);
 		}
 	}
+	
 	@EventHandler
 	public void onPlayerHit (EntityDamageByEntityEvent evt){
 		//If both involved are not players then we are not interested
+		System.out.println("Entity damage by entity event!");
 		if (!(evt.getDamager() instanceof Player) || !(evt.getEntity() instanceof Player)){
-			return;
-		}
-		//If its not either an attack or projectile we dont care
-		if (!(evt.getCause().toString().equals("ENTITY_ATTACK")) || !(evt.getCause().toString().equals("PROJECTILE"))) {
 			return;
 		}
 		Player player = (Player) evt.getEntity();
@@ -96,6 +96,7 @@ public class IDListener implements Listener {
 			damager.sendMessage("[DEBUG] You have hit an enemy!");
 		}
 	}
+	
 	@EventHandler
 	public void onPlayerQuit(PlayerQuitEvent e) {
 		Player p = e.getPlayer();
@@ -153,6 +154,18 @@ public class IDListener implements Listener {
 			}
 		}
 		e.setFormat(IDChatManager.getFormat(p, m));
+	}
+	
+	@EventHandler
+	public void onPlayerMove(PlayerMoveEvent e) {
+		System.out.println("Passed to player move event!");
+		Location pL = e.getPlayer().getLocation();
+		IDTurret turretNear = IDTurretManager.getTurretNear(pL);
+		if (turretNear == null) {
+			System.out.println("No turret near.");
+			return;
+		}
+		e.getPlayer().sendMessage("You are within 15 dist from "+turretNear.getTeam().toString()+" "+turretNear.getId().toString());
 	}
 
 	@EventHandler
