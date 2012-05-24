@@ -19,33 +19,33 @@ import org.bukkit.inventory.ItemStack;
 
 
 public class IDTeamManager {
-	
+
 	private static IDTeam blue;
 	private static IDTeam red;
 	private static IDTeam neutral;
-	
+
 	private static int bluePlayers = 0;
 	private static int redPlayers = 0;
-	
-	private static File redFile = new File(InsomniaDOTA.pFolder, "red.txt");
-	private static File blueFile = new File(InsomniaDOTA.pFolder, "blue.txt");
-	
+
+	private static File redFile = new File(InsomniaDOTA.pFolder, "redTeam.txt");
+	private static File blueFile = new File(InsomniaDOTA.pFolder, "blueTeam.txt");
+
 	static {
 		red = new IDTeam(Colour.RED);
 		blue = new IDTeam(Colour.BLUE);
 		neutral = new IDTeam(Colour.NEUTRAL);
 	}
-	
+
 	public static void setTeam(Colour col, Player p) {
 		removePlayer(getTeam(p), p);
 		addPlayer(col, p);
 		p.sendMessage("You are now on team "+col.toString()+"!");
 	}
-	
+
 	public static void removeFromTeam(Player p) {
 		removePlayer(getTeam(p), p);
 	}
-	
+
 	public static void addReady(Colour col, Player p) {
 		if (col.toString().equals("RED")) {
 			red.readyPlayer(p);
@@ -54,7 +54,7 @@ public class IDTeamManager {
 			blue.readyPlayer(p);
 		}
 	}
-	
+
 	public static void removeReady(Colour col, Player p) {
 		if (col.toString().equals("RED")) {
 			red.unreadyPlayer(p);
@@ -62,7 +62,7 @@ public class IDTeamManager {
 			blue.unreadyPlayer(p);
 		}
 	}
-	
+
 	public static boolean isPlayerReady(Player p) {
 		boolean r = red.isPlayerReady(p);
 		boolean b = blue.isPlayerReady(p);
@@ -86,7 +86,7 @@ public class IDTeamManager {
 		}
 		return null;
 	}
-	
+
 	public static ArrayList<Player> getBluePlayers() {
 		ArrayList<Player> b = new ArrayList<Player>();
 		for (Player p: blue.getPlayers()) {
@@ -94,7 +94,7 @@ public class IDTeamManager {
 		}
 		return b;
 	}
-	
+
 	public static ArrayList<Player> getRedPlayers() {
 		ArrayList<Player> r = new ArrayList<Player>();
 		for (Player p: red.getPlayers()) {
@@ -102,7 +102,7 @@ public class IDTeamManager {
 		}
 		return r;
 	}
-	
+
 	public static ArrayList<Player> getNeutralPlayers() {
 		ArrayList<Player> n = new ArrayList<Player>();
 		for (Player p: neutral.getPlayers()) {
@@ -110,15 +110,15 @@ public class IDTeamManager {
 		}
 		return n;
 	}
-	
+
 	public static int getRedCount() {
 		return redPlayers;
 	}
-	
+
 	public static int getBlueCount() {
 		return bluePlayers;
 	}
-	
+
 	public static void reset() {
 		//Set all players to neutral team
 		for (Player p: blue.getPlayers()) {
@@ -131,14 +131,14 @@ public class IDTeamManager {
 		bluePlayers = 0;
 		redPlayers = 0;
 	}
-	
+
 	public static boolean isAllReady() {
 		if (blue.isReady() && red.isReady()) {
 			return true;
 		}
 		return false;
 	}
-	
+
 	public static void setSpawn(Colour col, Location l) {
 		if (col.toString().equals("RED")) {
 			red.setSpawn(l);
@@ -157,7 +157,7 @@ public class IDTeamManager {
 	public static void save() throws IOException {
 		redFile.createNewFile();
 		blueFile.createNewFile();
-		
+
 		FileWriter rfw = new FileWriter(redFile);
 		FileWriter bfw = new FileWriter(blueFile);
 		PrintWriter rpw = new PrintWriter(rfw);
@@ -184,7 +184,7 @@ public class IDTeamManager {
 		bpw.close();
 		System.out.println("[DEBUG] Successfully saved teams!");
 	}
-	
+
 	public static void load() throws IOException {
 		if (!(redFile.exists()) || !(blueFile.exists())) {
 			return;
@@ -195,43 +195,49 @@ public class IDTeamManager {
 		BufferedReader rbw = new BufferedReader(rfw);
 		BufferedReader bbw = new BufferedReader(bfw);
 		String blueString = bbw.readLine();
-		String blueSpawn =bbw.readLine();
+		String blueSpawn = bbw.readLine();
 		String redString = rbw.readLine();
 		String redSpawn = rbw.readLine();
 		rbw.close();
 		bbw.close();
-		
+
 		//Set/process players
-		String[] blueSP = blueString.split(";");
-		String[] redSP = redString.split(";");
-		
-		for (String str: blueSP) {
-			Player p = InsomniaDOTA.s.getPlayer(str);
-			if (p == null) {
-				continue;
-			}
-			if (p.isOnline()) {
-				setTeam(Colour.BLUE, p);
-			}
-		}
-		for (String str: redSP) {
-			Player p = InsomniaDOTA.s.getPlayer(str);
-			if (p == null) {
-				continue;
-			}
-			if (p.isOnline()) {
-				setTeam(Colour.RED, p);
+		if (blueString != null) {
+			String[] blueSP = blueString.split(";");
+			for (int i = 0; i < blueSP.length; i++) {
+				System.out.println("Testing blue for "+blueSP[i]);
+				Player p = InsomniaDOTA.s.getPlayerExact(blueSP[i]);
+				if (p == null) {
+					continue;
+				}
+				if (p.isOnline()) {
+					setTeam(Colour.BLUE, p);
+				}
 			}
 		}
-		
+		if (redString != null) {
+			String[] redSP = redString.split(";");
+			for (int i = 0; i < redSP.length; i++) {
+				System.out.println("Testing red for "+redSP[i]);
+				Player p = InsomniaDOTA.s.getPlayerExact(redSP[i]);
+				if (p == null) {
+					continue;
+				}
+				if (p.isOnline()) {
+					setTeam(Colour.RED, p);
+				}
+			}
+		}
+
 		Player[] players = InsomniaDOTA.s.getOnlinePlayers();
 		for (Player p: players) {
 			if (getTeam(p) == null) {
 				setTeam(Colour.NEUTRAL, p);
 			}
 		}
+
 		//Set/process spawns
-		if (blueSpawn != null){
+		if (blueSpawn != null) {
 			String [] bSpawnSP = blueSpawn.split(";");
 			double x = Double.parseDouble(bSpawnSP [0]);
 			double y = Double.parseDouble(bSpawnSP [1]);
@@ -239,7 +245,7 @@ public class IDTeamManager {
 			Location l = new Location (InsomniaDOTA.s.getWorld("dota"), x, y,z);
 			blue.setSpawn(l);
 		}
-		if (redSpawn != null){
+		if (redSpawn != null) {
 			String [] rSpawnSP = redSpawn.split(";");
 			double x = Double.parseDouble(rSpawnSP [0]);
 			double y = Double.parseDouble(rSpawnSP [1]);
@@ -247,15 +253,15 @@ public class IDTeamManager {
 			Location l = new Location (InsomniaDOTA.s.getWorld("dota"), x, y,z);
 			red.setSpawn(l);
 		}
-		
+
 		System.out.println("[DEBUG] Successfully loaded teams!");
 	}
-	
+
 	private static void addPlayer(Colour col, Player p) {
 		if (col == null) {
 			return;
 		}
-		
+
 		if (col.toString().equals("BLUE")) {
 			blue.addPlayer(p);
 			System.out.println("[DEBUG] Adding "+p.getName()+" to team blue!");
@@ -273,12 +279,12 @@ public class IDTeamManager {
 		}
 		countPlayers();
 	}
-	
+
 	private static void removePlayer(Colour col, Player p) {
 		if (col == null) {
 			return;
 		}
-		
+
 		if (col.toString().equals("BLUE")) {
 			blue.removePlayer(p);
 			System.out.println("[DEBUG] Removing "+p.getName()+" from team blue!");
@@ -293,7 +299,7 @@ public class IDTeamManager {
 		}
 		countPlayers();
 	}
-	
+
 	private static void countPlayers() {
 		bluePlayers = blue.getPlayerCount();
 		redPlayers = red.getPlayerCount();
