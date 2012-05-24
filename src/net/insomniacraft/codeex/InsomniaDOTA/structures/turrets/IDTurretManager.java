@@ -13,7 +13,6 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
 
-import net.insomniacraft.codeex.DragonBurials.BurialSites.BurialSite;
 import net.insomniacraft.codeex.InsomniaDOTA.IDCommands;
 import net.insomniacraft.codeex.InsomniaDOTA.InsomniaDOTA;
 import net.insomniacraft.codeex.InsomniaDOTA.teams.IDTeam;
@@ -373,7 +372,7 @@ public class IDTurretManager {
 				continue;
 			}
 			Location lT = t.getTurretBlock().getLocation();
-			if (lT.distance(l) < 15) {
+			if (lT.distance(l) < 20) {
 				nearTurrets.add(t);
 			}
 		}

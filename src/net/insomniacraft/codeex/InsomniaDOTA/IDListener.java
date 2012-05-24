@@ -18,8 +18,8 @@ import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.player.PlayerChatEvent;
@@ -29,6 +29,8 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.BlockIterator;
 
 public class IDListener implements Listener {
@@ -60,6 +62,35 @@ public class IDListener implements Listener {
 		if (l != null){
 			p.teleport(l);
 		}
+	}
+		
+	@EventHandler
+	public void onPlayerMove(PlayerMoveEvent e) {
+		Location pL = e.getPlayer().getLocation();
+		IDTurret turretNear = IDTurretManager.getTurretNear(pL);
+		if (turretNear == null) {
+			return;
+		}
+		Player p = e.getPlayer();
+		// 1. Don't poison neutral players
+		if (IDTeamManager.getTeam(p).toString().equals("NEUTRAL")) {
+			return;
+		}
+		// 2. Don't poison friendly players
+		if (turretNear.getTeam().toString().equals(IDTeamManager.getTeam(p).toString())) {
+			return;
+		}
+		// 3. Don't stack poison
+		if (p.hasPotionEffect(PotionEffectType.POISON)) {
+			return;
+		}
+		// 4. Don't poison if less than 2/3rds hp
+		if (p.getHealth() <= 8) {
+			return;
+		}
+		p.addPotionEffect(new PotionEffect(PotionEffectType.POISON, 200, 4));
+		p.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 250, 1));
+		p.sendMessage("The enemy turret is attacking you!");
 	}
 	
 	@EventHandler
@@ -114,6 +145,9 @@ public class IDListener implements Listener {
 		if (!(IDCommands.setupPlayer.equalsIgnoreCase(e.getPlayer().getName()))) {
 			return;
 		}
+		if (e.getAction() != Action.LEFT_CLICK_BLOCK) {
+			return;
+		}
 		Block b = e.getClickedBlock();
 		if (b == null) {
 			return;
@@ -156,18 +190,6 @@ public class IDListener implements Listener {
 		e.setFormat(IDChatManager.getFormat(p, m));
 	}
 	
-	@EventHandler
-	public void onPlayerMove(PlayerMoveEvent e) {
-		System.out.println("Passed to player move event!");
-		Location pL = e.getPlayer().getLocation();
-		IDTurret turretNear = IDTurretManager.getTurretNear(pL);
-		if (turretNear == null) {
-			System.out.println("No turret near.");
-			return;
-		}
-		e.getPlayer().sendMessage("You are within 15 dist from "+turretNear.getTeam().toString()+" "+turretNear.getId().toString());
-	}
-
 	@EventHandler
 	public void onArrowShot(ProjectileHitEvent e) {
 		Entity projectile = e.getEntity();

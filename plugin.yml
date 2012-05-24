@@ -35,6 +35,9 @@ commands:
   b:
    description: Used to recall.
    usage: Usage is /b
+  fb:
+   description: Used to spawn a fireball
+   usage: Usage is /fb
 permissions:
   DOTA.play:
    description: Enables a person to join and play DOTA games.

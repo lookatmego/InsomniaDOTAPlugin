@@ -19,8 +19,10 @@ public class InsomniaDOTA extends JavaPlugin {
 
 	public void onEnable() {
 		s = getServer();
+		//Set listener
 		IDListener listener = new IDListener(this);
 		getServer().getPluginManager().registerEvents(listener, this);
+		//Set commands
 		IDCommands commands = new IDCommands(this);
 		getCommand("setup").setExecutor(commands);
 		getCommand("set").setExecutor(commands);
@@ -32,6 +34,7 @@ public class InsomniaDOTA extends JavaPlugin {
 		getCommand("all").setExecutor(commands);
 		getCommand("teamswitch").setExecutor(commands);
 		getCommand("b").setExecutor(commands);		
+		getCommand("fb").setExecutor(commands);
 		
 		if (!pFolder.exists()) {
 			pFolder.mkdir();
