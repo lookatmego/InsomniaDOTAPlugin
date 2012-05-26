@@ -21,11 +21,13 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
+import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
 import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -257,6 +259,15 @@ public class IDListener implements Listener {
 		World w = e.getEntity().getWorld();
 		if (w.getName().equals("dota")){
 			e.setCancelled(true);
+		}
+	}
+	@EventHandler
+	public void NoMobSpawn(CreatureSpawnEvent e){
+		World w = e.getEntity().getWorld();
+		if (w.getName().equals("dota")){
+			if ((e.getSpawnReason().equals(SpawnReason.NATURAL)) || (e.getSpawnReason().equals(SpawnReason.DEFAULT))){
+				e.setCancelled(true);
+			}
 		}
 	}
 }
