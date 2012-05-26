@@ -12,26 +12,27 @@ import net.insomniacraft.codeex.InsomniaDOTA.teams.IDTeam.Colour;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.player.PlayerChatEvent;
-import org.bukkit.event.player.PlayerEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -67,7 +68,7 @@ public class IDListener implements Listener {
 			p.teleport(l);
 		}
 	}
-		
+
 	@EventHandler
 	public void onPlayerMove(PlayerMoveEvent e) {
 		Location pL = e.getPlayer().getLocation();
@@ -96,11 +97,10 @@ public class IDListener implements Listener {
 		p.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 250, 1));
 		p.sendMessage("The enemy turret is attacking you!");
 	}
-	
+
 	@EventHandler
 	public void onPlayerHit (EntityDamageByEntityEvent evt){
 		//If both involved are not players then we are not interested
-		System.out.println("Entity damage by entity event!");
 		if (!(evt.getDamager() instanceof Player) || !(evt.getEntity() instanceof Player)){
 			return;
 		}
@@ -112,18 +112,18 @@ public class IDListener implements Listener {
 		int num = r.nextInt(4);
 		if (pCol.equals(dCol)){
 			switch (num) {
-				case 0:
-					damager.sendMessage(ChatColor.DARK_RED + "That's a friendly!");
-					break;
-				case 1:
-					damager.sendMessage(ChatColor.DARK_RED + "Watch your fire!");
-					break;
-				case 2:
-					damager.sendMessage(ChatColor.DARK_RED + "It's not that dark outside!");
-					break;
-				case 3:
-					damager.sendMessage(ChatColor.DARK_RED + "What, are you blind? I'm a friendly!");
-					break;
+			case 0:
+				damager.sendMessage(ChatColor.DARK_RED + "That's a friendly!");
+				break;
+			case 1:
+				damager.sendMessage(ChatColor.DARK_RED + "Watch your fire!");
+				break;
+			case 2:
+				damager.sendMessage(ChatColor.DARK_RED + "It's not that dark outside!");
+				break;
+			case 3:
+				damager.sendMessage(ChatColor.DARK_RED + "What, are you blind? I'm a friendly!");
+				break;
 			}
 			evt.setCancelled(true);
 		} else {
@@ -131,7 +131,7 @@ public class IDListener implements Listener {
 			damager.sendMessage("[DEBUG] You have hit an enemy!");
 		}
 	}
-	
+
 	@EventHandler
 	public void onPlayerQuit(PlayerQuitEvent e) {
 		Player p = e.getPlayer();
@@ -142,7 +142,7 @@ public class IDListener implements Listener {
 	}
 
 	@EventHandler
-	public void onPlayerInteract(PlayerInteractEvent e) {
+	public void onBlockSelect(PlayerInteractEvent e) {
 		if (!IDCommands.setup) {
 			return;
 		}
@@ -193,9 +193,9 @@ public class IDListener implements Listener {
 		}
 		e.setFormat(IDChatManager.getFormat(p, m));
 	}
-	
+
 	@EventHandler
-	public void onArrowShot(ProjectileHitEvent e) {
+	public void onArrowHit(ProjectileHitEvent e) {
 		Entity projectile = e.getEntity();
 		//Check if not arrow
 		if (!(projectile instanceof Arrow)) {
@@ -228,14 +228,22 @@ public class IDListener implements Listener {
 			pl.getServer().broadcastMessage(String.valueOf(nex.getHealth()));
 		}
 	}
+
 	@EventHandler
-	public void onPlayerReady(PlayerMoveEvent e){
-		Player p = e.getPlayer();
-		if (!(IDTeamManager.isAllReady())) {
-			p.sendMessage("Game has not started! Please Wait!!!");
-			e.setCancelled(true);
+	public void onArrowShot(EntityShootBowEvent e) {
+		if (!(e.getEntity() instanceof Player)) {
+			return;
 		}
+		final Player player = (Player)e.getEntity();
+		pl.getServer().getScheduler().scheduleSyncDelayedTask(pl, new Runnable()
+		{
+			public void run() {
+				player.getInventory().addItem(new ItemStack[] { new ItemStack(Material.ARROW, 1) });
+			}
+		}
+		, 1L);
 	}
+	
 	@EventHandler
 	public void NoExperience(EntityDeathEvent e){
 		World w = e.getEntity().getWorld();
@@ -243,12 +251,12 @@ public class IDListener implements Listener {
 				e.setDroppedExp(0);
 		}
 	}
+	
 	@EventHandler
 	public void NoHunger(FoodLevelChangeEvent e){
 		World w = e.getEntity().getWorld();
 		if (w.getName().equals("dota")){
 			e.setCancelled(true);
+		}
 	}
-	}
-	
 }
