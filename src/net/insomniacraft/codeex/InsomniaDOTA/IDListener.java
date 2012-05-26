@@ -241,22 +241,16 @@ public class IDListener implements Listener {
 	//any experience at all in which case we dont have to do anything
 	public void NoExperience(EntityDeathEvent e){
 		World w = e.getEntity().getWorld();
-		if (w.equals("dota")){
-			if (e.getDroppedExp() > 0){
+		if (w.getName().equals("dota")){
 				e.setDroppedExp(0);
-			}else{
-				return;
-		}
 		}
 	}
 	@EventHandler
 	public void NoHunger(FoodLevelChangeEvent e){
 		World w = e.getEntity().getWorld();
-		if (w.equals("dota")){
+		if (w.getName().equals("dota")){
 			e.setCancelled(true);
-		}
-		
 	}
-	
+	}
 	
 }
