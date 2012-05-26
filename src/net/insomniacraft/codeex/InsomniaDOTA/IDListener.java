@@ -225,11 +225,11 @@ public class IDListener implements Listener {
 		}
 	}
 	@EventHandler
-	public void onPlayerMove(PlayerMoveEvent e){
-		if (!(IDTeamManager.isAllReady())){
-		return;	
-		p.sendMessage("Game has not started!Please Wait!");
+	public void onPlayerReady(PlayerMoveEvent e){
+		Player p = e.getPlayer();
+		if (!(IDTeamManager.isAllReady())) {
+			p.sendMessage("Game has not started! Please Wait!!!");
+			e.setCancelled(true);
 		}
 	}
-
 }
