@@ -224,4 +224,12 @@ public class IDListener implements Listener {
 			pl.getServer().broadcastMessage(String.valueOf(nex.getHealth()));
 		}
 	}
+	@EventHandler
+	public void onPlayerMove(PlayerMoveEvent e){
+		if (!(IDTeamManager.isAllReady())){
+		return;	
+		p.sendMessage("Game has not started!Please Wait!");
+		}
+	}
+
 }
