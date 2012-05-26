@@ -21,6 +21,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -232,4 +233,15 @@ public class IDListener implements Listener {
 			e.setCancelled(true);
 		}
 	}
+	@EventHandler
+	//I put if droppedexperience is bigger than 0 because it may not drop 
+	//any experience at all in which case we dont have to do anything
+	public void NoExperience(EntityDeathEvent e){
+			if (e.getDroppedExp() > 0){
+				e.setDroppedExp(0);
+			}else{
+				return;
+		}
+	}
+	
 }
