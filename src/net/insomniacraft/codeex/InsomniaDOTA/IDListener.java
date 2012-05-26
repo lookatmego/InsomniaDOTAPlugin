@@ -237,8 +237,6 @@ public class IDListener implements Listener {
 		}
 	}
 	@EventHandler
-	//I put if droppedexperience is bigger than 0 because it may not drop 
-	//any experience at all in which case we dont have to do anything
 	public void NoExperience(EntityDeathEvent e){
 		World w = e.getEntity().getWorld();
 		if (w.getName().equals("dota")){
